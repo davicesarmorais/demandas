@@ -12,11 +12,11 @@ principal_input = int(input("> "))
 match principal_input:
     case 1:
         digitar_num_titulo = input("Digite o número ou o titulo da demanda: ")
-        if digitar_num_titulo not in demanda_numero or digitar_num_titulo not in demanda_titulo:
-            print("Demanda não encontrada.")
-        else:
+        if digitar_num_titulo in demanda_numero or digitar_num_titulo in demanda_titulo:
             os.system("cls")   
             print("00001 - Demanda titulo\nEstimativa: 0h\nHoras concluidas: 0h\nHoras restantes: 0h")
+        else:
+            print("Demanda não encontrada.")
 
     case 2:
         cadastrar_numero = int(input("Digite o número da demanda: "))
