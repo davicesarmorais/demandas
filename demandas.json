@@ -2,27 +2,21 @@
     "Demandas-concluidas": {
         "1098":{
             "titulo": "titulo",
-            "data-hora": {
-                "data": "10/02/2024",
-                "horas": 0
-            }
+            "estimativa": 10,
+            "10/02/2024": 0
         },
-        "3283":{
-            "titulo": "titulo2",
-            "data-hora": {
-                "data": "11/02/2024",
-                "horas": 2
-            }
+        "1324":{
+            "titulo": "titulo",
+            "estimativa": 10,
+            "10/02/2024": 0
         }
     },
 
     "Demandas-ativas": {
-        "1098":{
-            "titulo": "titulo3",
-            "data-hora": {
-                "data": "13/02/2024",
-                "horas": 1
-            }
+        "4321":{
+            "titulo": "titulo",
+            "estimativa": 10,
+            "10/02/2024": 0
         }
     }
 }
