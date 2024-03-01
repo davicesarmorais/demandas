@@ -1,6 +1,3 @@
-# Se diferenca <= 0 setar status para concluida. else: ativa
-#
-#
 import os
 import time
 import json
