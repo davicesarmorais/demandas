@@ -12,11 +12,18 @@ else:
 
 numeros = []
 titulos = []
+datas_tupla = []
 
 for numero in demandas:
     numeros.append(numero)
     titulos.append(demandas[numero]["titulo"])
 
+
 print(numeros)
 print(titulos)
+
+lista = list(demandas["1098"]["datas"].items())
+print(lista)
+for item in lista:
+    print(item[0],item[1])
 

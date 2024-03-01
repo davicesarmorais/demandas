@@ -7,13 +7,20 @@ import json
 demanda_numero = []
 demanda_titulo = []
 
-
+def calculo():
+    lista = list(demandas[num]["datas"].items())
+    soma = 0
+    for item in lista:
+        soma = soma + int(item[1])
+    diferenca = int(demandas[num]['estimativa']) - soma
+    return diferenca, soma
 try:
     with open("demandas.json", 'r') as f:
         demandas = json.load(f)
         for numero in demandas:
             demanda_numero.append(numero)
             demanda_titulo.append(demandas[numero]["titulo"])
+            
 except FileNotFoundError:
     demandas = {}
     with open("demandas.json", 'w') as f:
@@ -31,13 +38,17 @@ while True:
                 digitar_num_titulo = input("Digite o número ou o titulo da demanda: ")
                 if digitar_num_titulo in demanda_numero or digitar_num_titulo in demanda_titulo:
                     os.system("cls")   
-                    #print("00001 - Demanda titulo\nEstimativa: 0h\nHoras concluidas: 0h\nHoras restantes: 0h\n") # Demanda simples
                     if not digitar_num_titulo.isdigit():
-                        a = demanda_titulo.index(digitar_num_titulo)
-                        a = demanda_numero[a]
+                        num = demanda_titulo.index(digitar_num_titulo)
+                        num = demanda_numero[num]
                     else:
-                        a = digitar_num_titulo
-                    print(f"{a}")
+                        num = digitar_num_titulo
+                    
+                    print(f"{num} - {demandas[num]['titulo']}")
+                    print(f"Estimativa: {demandas[num]['estimativa']}h")
+                    print(f"Status: {demandas[num]['status']}")
+                    print(f"Horas gastas: {calculo()[1]}h")
+                    print(f"Horas restantes: {calculo()[0]}h")
                     
                     print("1. Computar horas\n2. Ver detalhes\n3. Voltar (enter)")
                     input_horas_ver_detalhes = input("> ")
