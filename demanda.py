@@ -51,6 +51,6 @@ while True:
                 cadastrar_titulo = input("Digite o titulo da demanda: ")
                 cadastrar_estimativa = float(input("Digite a estimativa de horas da demanda: "))
             case 3:
-                ...
+                print("Demandas ativas")
             case 4:
-                ...
+                print("Demandas concluidas")
