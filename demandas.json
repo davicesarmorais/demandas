@@ -1,29 +1,28 @@
 {
-    "Demandas-concluidas": {
-        "1098":{
-            "titulo": "titulo",
-            "estimativa": 10,
-            "datas": {
-                "10/02/2024": 0,
-                "11/02/2024": 2
-            }
-        },
-        "1324":{
-            "titulo": "titulo",
-            "estimativa": 10,
-            "datas": {
-                "10/02/2024": 0
-            }
+    "1098":{
+        "titulo": "titulo",
+        "estimativa": 10,
+        "status": "ativa",
+        "datas": {
+            "10/02/2024": 0,
+            "11/02/2024": 2
+        }
+    },
+    "1324":{
+        "titulo": "titulo",
+        "estimativa": 10,
+        "status": "ativa",
+        "datas": {
+            "10/02/2024": 0
         }
     },
 
-    "Demandas-ativas": {
-        "4321":{
-            "titulo": "titulo",
-            "estimativa": 10,
-            "datas": {
-                "10/02/2024": 0
-            }
+    "4321":{
+        "titulo": "titulo",
+        "estimativa": 10,
+        "status": "concluida",
+        "datas": {
+            "10/02/2024": 0
         }
     }
 }

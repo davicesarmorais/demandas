@@ -13,7 +13,19 @@ demanda_concluida = []
 demanda_ativa = []
 demanda_numero = ["davi"]
 demanda_titulo = ["011"]
- 
+
+def dict_lista():
+    demandas[""]
+
+try:
+    with open("demandas.json", 'r') as f:
+        demandas = json.load(f)
+
+except FileNotFoundError:
+    demandas = {}
+    with open("demandas.json", 'w') as f:
+        json.dump(demandas, f, indent="4") 
+
 while True:
     
     os.system("cls")
