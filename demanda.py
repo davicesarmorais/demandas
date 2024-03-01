@@ -3,24 +3,17 @@ import os
 import time
 import json
 
-with open("demandas.json") as file:
-    demandas = json.load(file)
 
+demanda_numero = []
+demanda_titulo = []
 
-
-demanda = []
-demanda_concluida = []
-demanda_ativa = []
-demanda_numero = ["davi"]
-demanda_titulo = ["011"]
-
-def dict_lista():
-    demandas[""]
 
 try:
     with open("demandas.json", 'r') as f:
         demandas = json.load(f)
-
+        for numero in demandas:
+            demanda_numero.append(numero)
+            demanda_titulo.append(demandas[numero]["titulo"])
 except FileNotFoundError:
     demandas = {}
     with open("demandas.json", 'w') as f:
@@ -38,8 +31,13 @@ while True:
                 digitar_num_titulo = input("Digite o número ou o titulo da demanda: ")
                 if digitar_num_titulo in demanda_numero or digitar_num_titulo in demanda_titulo:
                     os.system("cls")   
-                    print("00001 - Demanda titulo\nEstimativa: 0h\nHoras concluidas: 0h\nHoras restantes: 0h\n") # Demanda simples
-                    
+                    #print("00001 - Demanda titulo\nEstimativa: 0h\nHoras concluidas: 0h\nHoras restantes: 0h\n") # Demanda simples
+                    if not digitar_num_titulo.isdigit():
+                        a = demanda_titulo.index(digitar_num_titulo)
+                        a = demanda_numero[a]
+                    else:
+                        a = digitar_num_titulo
+                    print(f"{a}")
                     
                     print("1. Computar horas\n2. Ver detalhes\n3. Voltar (enter)")
                     input_horas_ver_detalhes = input("> ")

@@ -3,11 +3,20 @@ import json
 with open("demandas.json") as file:
     demandas = json.load(file)
 
-print(demandas["Demandas-concluidas"]["1098"]["datas"])
+print(demandas["1098"]["datas"])
 
-if "4321" in demandas["Demandas-concluidas"] or "4321" in demandas["Demandas-ativas"]:
+if "4321" in demandas:
     print("Está em demandas")     
 else:
     print("Nao esta em demandas")
 
-print(demandas["4321"])
+numeros = []
+titulos = []
+
+for numero in demandas:
+    numeros.append(numero)
+    titulos.append(demandas[numero]["titulo"])
+
+print(numeros)
+print(titulos)
+
