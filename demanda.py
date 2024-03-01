@@ -1,6 +1,10 @@
 # salvar: numemro da demanda, titulo da demandda, estimativa, 
 import os
 import time
+import json
+
+with open("demandas.json") as file:
+    demandas = json.load(file)
 
 demanda = []
 demanda_concluida = []
