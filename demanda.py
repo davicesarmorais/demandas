@@ -1,19 +1,20 @@
-# salvar: numemro da demanda, titulo da demandda, estimativa, 
+# Se diferenca <= 0 setar status para concluida. else: ativa
+#
+#
 import os
 import time
 import json
 
-
 demanda_numero = []
 demanda_titulo = []
 
-def calculo():
-    lista = list(demandas[num]["datas"].items())
-    soma = 0
-    for item in lista:
-        soma = soma + int(item[1])
-    diferenca = int(demandas[num]['estimativa']) - soma
-    return diferenca, soma
+def status():
+    if diferenca <= 0:
+        status = "concluída"
+    else:
+        status = "ativa"
+    return status
+
 try:
     with open("demandas.json", 'r') as f:
         demandas = json.load(f)
@@ -44,17 +45,23 @@ while True:
                     else:
                         num = digitar_num_titulo
                     
+                    lista = list(demandas[num]["datas"].items())
+                    soma = 0
+                    for item in lista:
+                        soma = soma + int(item[1])
+                    diferenca = int(demandas[num]['estimativa']) - soma
+                    
                     print(f"{num} - {demandas[num]['titulo']}")
                     print(f"Estimativa: {demandas[num]['estimativa']}h")
-                    print(f"Status: {demandas[num]['status']}")
-                    print(f"Horas gastas: {calculo()[1]}h")
-                    print(f"Horas restantes: {calculo()[0]}h")
+                    print(f"Status: {status()}")
+                    print(f"Horas gastas: {soma}h")
+                    print(f"Horas restantes: {diferenca}h")
                     
-                    print("1. Computar horas\n2. Ver detalhes\n3. Voltar (enter)")
+                    print("\n1. Computar horas\n2. Ver detalhes\n3. Voltar (enter)")
                     input_horas_ver_detalhes = input("> ")
                     
                     
-                    if input_horas_ver_detalhes == "1": # Cmmputar horas
+                    if input_horas_ver_detalhes == "1": # Computar horas
                         computar_horas = input("Digite as horas: ")
                         data_settings = input("1. Usar data automatica\n2. Digitar data manualmente\n3. Cancelar (enter)")
                         if data_settings == "1":
@@ -65,7 +72,15 @@ while True:
                     
                     elif input_horas_ver_detalhes == "2": # Ver detalhes
                         os.system("cls")
-                        print("demandas detalhada") # Demanda detalhada
+                        lista = list(demandas[num]["datas"].items())
+                        print(f"{num} - {demandas[num]['titulo']}")
+                        print(f"Estimativa: {demandas[num]['estimativa']}h")
+                        print(f"Status: {status()}")
+                        print(f"Horas gastas: {soma}h")
+                        print(f"Horas restantes: {diferenca}h") 
+                        for item in lista:
+                            print(f"{item[0]}: {item[1]}h")
+                        print()
                         voltar = input("Aperte enter para voltar a tela principal.")
                 
                 
@@ -78,6 +93,38 @@ while True:
                 cadastrar_titulo = input("Digite o titulo da demanda: ")
                 cadastrar_estimativa = float(input("Digite a estimativa de horas da demanda: "))
             case 3:
-                print("Demandas ativas")
+                os.system("cls")
+                
+                for num in demandas:
+                    soma = 0
+                    for item in demandas[num]["datas"].items():
+                        soma = soma + int(item[1])
+                    diferenca = int(demandas[num]["estimativa"]) - soma
+                    if diferenca > 0:
+                        lista = list(demandas[num]["datas"].items())
+                        print(f"{num} - {demandas[num]['titulo']}")
+                        print(f"Estimativa: {demandas[num]['estimativa']}h")
+                        print(f"Status: ativa")
+                        print(f"Horas gastas: {soma}h")
+                        print(f"Horas restantes: {diferenca}h")
+                        print("-" * 20)
+                print()
+                voltar = input("Aperte enter para voltar a tela principal.")
+                             
             case 4:
-                print("Demandas concluidas")
+                os.system("cls")
+                for num in demandas:
+                    soma = 0
+                    for item in demandas[num]["datas"].items():
+                        soma = soma + int(item[1])
+                    diferenca = int(demandas[num]["estimativa"]) - soma
+                    if diferenca <= 0:
+                        lista = list(demandas[numero]["datas"].items())
+                        print(f"{num} - {demandas[num]['titulo']}")
+                        print(f"Estimativa: {demandas[num]['estimativa']}h")
+                        print(f"Status: concluída")
+                        print(f"Horas gastas: {soma}h")
+                        print(f"Horas restantes: {diferenca}h")
+                        print("-" * 10)
+                print()
+                voltar = input("Aperte enter para voltar a tela principal.")

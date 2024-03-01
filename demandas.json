@@ -2,16 +2,14 @@
     "1098":{
         "titulo": "titulo1",
         "estimativa": 10,
-        "status": "ativa",
         "datas": {
-            "10/02/2024": 0,
+            "10/02/2024": 8,
             "11/02/2024": 2
         }
     },
     "1324":{
         "titulo": "titulo2",
         "estimativa": 10,
-        "status": "ativa",
         "datas": {
             "10/02/2024": 0
         }
@@ -20,7 +18,6 @@
     "4321":{
         "titulo": "titulo3",
         "estimativa": 10,
-        "status": "concluida",
         "datas": {
             "10/02/2024": 0
         }
