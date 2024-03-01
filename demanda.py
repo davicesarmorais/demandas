@@ -6,6 +6,8 @@ import json
 with open("demandas.json") as file:
     demandas = json.load(file)
 
+
+
 demanda = []
 demanda_concluida = []
 demanda_ativa = []
