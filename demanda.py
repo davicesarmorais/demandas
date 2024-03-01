@@ -16,25 +16,29 @@ while True:
     if  principal_input.isdigit():    
         match int(principal_input):
             
-            case 1:
-                
-                
+            case 1:  
                 digitar_num_titulo = input("Digite o número ou o titulo da demanda: ")
                 if digitar_num_titulo in demanda_numero or digitar_num_titulo in demanda_titulo:
                     os.system("cls")   
-                    print("00001 - Demanda titulo\nEstimativa: 0h\nHoras concluidas: 0h\nHoras restantes: 0h\n")
+                    print("00001 - Demanda titulo\nEstimativa: 0h\nHoras concluidas: 0h\nHoras restantes: 0h\n") # Demanda simples
+                    
+                    
                     print("1. Computar horas\n2. Ver detalhes\n3. Voltar (enter)")
                     input_horas_ver_detalhes = input("> ")
                     
                     
-                    if input_horas_ver_detalhes == "1":
+                    if input_horas_ver_detalhes == "1": # Cmmputar horas
                         computar_horas = input("Digite as horas: ")
                         data_settings = input("1. Usar data automatica\n2. Digitar data manualmente\n3. Cancelar (enter)")
+                        if data_settings == "1":
+                            ...
+                        elif data_settings == "2":
+                            ...
                     
                     
-                    elif input_horas_ver_detalhes == "2":
+                    elif input_horas_ver_detalhes == "2": # Ver detalhes
                         os.system("cls")
-                        print("demandas detalhada")
+                        print("demandas detalhada") # Demanda detalhada
                         voltar = input("Aperte enter para voltar a tela principal.")
                 
                 
