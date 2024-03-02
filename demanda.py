@@ -132,7 +132,7 @@ while True:
                     case "2":
                         print("funcao indisponivel no momentos")
                       #  remover_numero = input("Digite o número da demanda que deseja remover: ")
-            
+                    
             
             
             case 3:
