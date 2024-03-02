@@ -1,9 +1,7 @@
 import os
 import time
 import json
-
-demanda_numero = []
-demanda_titulo = []
+from datetime import datetime
 
 def status():
     if diferenca <= 0:
@@ -12,19 +10,22 @@ def status():
         status = "ativa"
     return status
 
-try:
-    with open("demandas.json", 'r') as f:
-        demandas = json.load(f)
-        for numero in demandas:
-            demanda_numero.append(numero)
-            demanda_titulo.append(demandas[numero]["titulo"])
-            
-except FileNotFoundError:
-    demandas = {}
-    with open("demandas.json", 'w') as f:
-        json.dump(demandas, f, indent=4) 
 
 while True:
+    demanda_numero = []
+    demanda_titulo = []
+
+    try:
+        with open("demandas.json", 'r') as f:
+            demandas = json.load(f)
+            for numero in demandas:
+                demanda_numero.append(numero)
+                demanda_titulo.append(demandas[numero]["titulo"])
+                
+    except FileNotFoundError:
+        demandas = {}
+        with open("demandas.json", 'w') as f:
+            json.dump(demandas, f, indent=4) 
     
     os.system("cls")
     print("1. Pesquisar demanda.\n2. Cadastrar demanda.\n3. Listar demandas em execução\n4. Listar demandas concluídas.")
@@ -60,12 +61,24 @@ while True:
                     
                     if input_horas_ver_detalhes == "1": # Computar horas
                         computar_horas = input("Digite as horas: ")
-                        data_settings = input("1. Usar data automatica\n2. Digitar data manualmente\n3. Cancelar (enter)")
+                        print("1. Usar data automatica\n2. Digitar data manualmente\n3. Cancelar (enter)")
+                        data_settings = input("> ")
+                        
                         if data_settings == "1":
-                            ...
+                            data = datetime.now().date().strftime("%d/%m/%Y")
+                            computar_dict = {}
+                            computar_dict = {data: int(computar_horas)}
+                            demandas[num]["datas"].update(computar_dict)
+                            with open("demandas.json" , "w") as f:
+                                json.dump(demandas , f, indent=4)
+                        
                         elif data_settings == "2":
-                            ...
-                    
+                            data_input = input("Digite a data (formato: dia/mes/ano): ")
+                            computar_dict = {}
+                            computar_dict = {data_input: int(computar_horas)}
+                            demandas[num]["datas"].update(computar_dict)
+                            with open("demandas.json" , "w") as f:
+                                json.dump(demandas , f, indent=4)
                     
                     elif input_horas_ver_detalhes == "2": # Ver detalhes
                         os.system("cls")
@@ -117,7 +130,8 @@ while True:
                                         print("Não foi posssível cadastrar essa demanda (Há outra com o mesmo número registrada).")
                                         time.sleep(3)
                     case "2":
-                        remover_numero = input("Digite o número da demanda que deseja remover: ")
+                        print("funcao indisponivel no momentos")
+                      #  remover_numero = input("Digite o número da demanda que deseja remover: ")
             
             
             
