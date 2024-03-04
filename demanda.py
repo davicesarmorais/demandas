@@ -28,7 +28,7 @@ while True:
             json.dump(demandas, f, indent=4) 
     
     os.system("cls")
-    print("1. Pesquisar demanda.\n2. Cadastrar demanda.\n3. Listar demandas em execução\n4. Listar demandas concluídas.")
+    print("1. Pesquisar demanda.\n2. Cadastrar/Editar demanda.\n3. Listar demandas em execução\n4. Listar demandas concluídas.\n5. Salvar e fechar programa.")
     principal_input = (input("> "))
     if  principal_input.isdigit():    
         match int(principal_input):
@@ -47,52 +47,95 @@ while True:
                     soma = 0
                     for item in lista:
                         soma = soma + int(item[1])
-                    diferenca = int(demandas[num]['estimativa']) - soma
-                    
-                    print(f"{num} - {demandas[num]['titulo']}")
-                    print(f"Estimativa: {demandas[num]['estimativa']}h")
-                    print(f"Status: {status()}")
-                    print(f"Horas gastas: {soma}h")
-                    print(f"Horas restantes: {diferenca}h")
-                    
-                    print("\n1. Computar horas\n2. Ver detalhes\n3. Voltar (enter)")
-                    input_horas_ver_detalhes = input("> ")
-                    
-                    
-                    if input_horas_ver_detalhes == "1": # Computar horas
-                        computar_horas = input("Digite as horas: ")
-                        print("1. Usar data automatica\n2. Digitar data manualmente\n3. Cancelar (enter)")
-                        data_settings = input("> ")
-                        
-                        if data_settings == "1":
-                            data = datetime.now().date().strftime("%d/%m/%Y")
-                            computar_dict = {}
-                            computar_dict = {data: int(computar_horas)}
-                            demandas[num]["datas"].update(computar_dict)
-                            with open("demandas.json" , "w") as f:
-                                json.dump(demandas , f, indent=4)
-                        
-                        elif data_settings == "2":
-                            data_input = input("Digite a data (formato: dia/mes/ano): ")
-                            computar_dict = {}
-                            computar_dict = {data_input: int(computar_horas)}
-                            demandas[num]["datas"].update(computar_dict)
-                            with open("demandas.json" , "w") as f:
-                                json.dump(demandas , f, indent=4)
-                    
-                    elif input_horas_ver_detalhes == "2": # Ver detalhes
+                    diferenca = int(demandas[num]['estimativa']) - soma             
+                    while True:
                         os.system("cls")
-                        lista = list(demandas[num]["datas"].items())
                         print(f"{num} - {demandas[num]['titulo']}")
                         print(f"Estimativa: {demandas[num]['estimativa']}h")
                         print(f"Status: {status()}")
                         print(f"Horas gastas: {soma}h")
-                        print(f"Horas restantes: {diferenca}h") 
-                        for item in lista:
-                            print(f"{item[0]}: {item[1]}h")
-                        print()
-                        voltar = input("Aperte enter para voltar a tela principal.")
-                
+                        print(f"Horas restantes: {diferenca}h")
+                        
+                        print("\n1. Computar horas\n2. Ver detalhes\n3. Voltar (enter)")
+                        input_horas_ver_detalhes = input("> ")
+                        
+                        
+                        if input_horas_ver_detalhes == "1": # Computar horas
+                            computar_horas = input("Digite as horas: ")
+                            if not computar_horas == "":
+                                print("1. Usar data automatica\n2. Digitar data manualmente\n3. Cancelar (enter)")
+                                data_settings = input("> ")
+                                
+                                if data_settings == "1":
+                                    data = datetime.now().date().strftime("%d/%m/%Y")
+                                    computar_dict = {}
+                                    computar_dict = {data: int(computar_horas)}
+                                    demandas[num]["datas"].update(computar_dict)
+                                    with open("demandas.json" , "w") as f:
+                                        json.dump(demandas , f, indent=4)
+                                    print("Horas computadas com sucesso!")
+                                    time.sleep(1)
+                                    break
+                                
+                                elif data_settings == "2":
+                                    data_input = input("Digite a data (formato: dia/mes/ano): ")
+                                    computar_dict = {}
+                                    computar_dict = {data_input: int(computar_horas)}
+                                    demandas[num]["datas"].update(computar_dict)
+                                    with open("demandas.json" , "w") as f:
+                                        json.dump(demandas , f, indent=4)
+                                    print("Horas computadas com sucesso!")
+                                    time.sleep(1)
+                                    break
+                        
+                        elif input_horas_ver_detalhes == "2": # Ver detalhes
+                            os.system("cls")
+                            lista = list(demandas[num]["datas"].items())
+                            print(f"{num} - {demandas[num]['titulo']}")
+                            print(f"Estimativa: {demandas[num]['estimativa']}h")
+                            print(f"Status: {status()}")
+                            print(f"Horas gastas: {soma}h")
+                            print(f"Horas restantes: {diferenca}h") 
+                            for item in lista:
+                                print(f"{item[0]}: {item[1]}h")
+                            print()
+                            print("\n1. Computar horas\n2. Ver menos detalhes\n3. Voltar (enter)")
+                            input_horas_ver_detalhes = input("> ")
+                            
+                            if input_horas_ver_detalhes == "1": # Computar horas
+                                computar_horas = input("Digite as horas: ")
+                                if not computar_horas == "":
+                                    print("1. Usar data automatica\n2. Digitar data manualmente\n3. Cancelar (enter)")
+                                    data_settings = input("> ")
+                                    
+                                    if data_settings == "1":
+                                        data = datetime.now().date().strftime("%d/%m/%Y")
+                                        computar_dict = {}
+                                        computar_dict = {data: int(computar_horas)}
+                                        demandas[num]["datas"].update(computar_dict)
+                                        with open("demandas.json" , "w") as f:
+                                            json.dump(demandas , f, indent=4)
+                                        print("Horas computadas com sucesso!")
+                                        time.sleep(1)
+                                        break
+                                    
+                                    elif data_settings == "2":
+                                        data_input = input("Digite a data (formato: dia/mes/ano): ")
+                                        computar_dict = {}
+                                        computar_dict = {data_input: int(computar_horas)}
+                                        demandas[num]["datas"].update(computar_dict)
+                                        with open("demandas.json" , "w") as f:
+                                            json.dump(demandas , f, indent=4)
+                                        print("Horas computadas com sucesso!")
+                                        time.sleep(1)
+                                        break
+                            
+                            elif input_horas_ver_detalhes == "2":
+                                os.system("cls")
+                            else:
+                                break
+                        else:
+                            break
                 
                 else:                
                     print("Demanda não encontrada.")
@@ -130,8 +173,21 @@ while True:
                                         print("Não foi posssível cadastrar essa demanda (Há outra com o mesmo número registrada).")
                                         time.sleep(3)
                     case "2":
-                        print("funcao indisponivel no momentos")
-                      #  remover_numero = input("Digite o número da demanda que deseja remover: ")
+                        remover_demanda = input("Digite o número da demanda que deseja remover: ")
+                        if remover_demanda not in demandas:
+                            print("Demanda não encontrada.")
+                        else:
+                            print(f"Você realmente deseja excluir a demanda {remover_demanda} (s/n)")
+                            confirmacao = input("> ")
+                            if confirmacao.upper() == "S":
+                                del demandas[remover_demanda]
+                                with open("demandas.json" , "w") as f:
+                                    json.dump(demandas , f, indent=4)
+                                print(f"Demanda {remover_demanda} excluída com sucesso.")
+                                time.sleep(1)
+                    case "3":
+                        ...
+
                     
             
             
@@ -152,7 +208,7 @@ while True:
                         print(f"Horas restantes: {diferenca}h")
                         print("-" * 20)
                 print()
-                voltar = input("Aperte enter para voltar a tela principal.")
+                input("Aperte enter para voltar a tela principal.")
                              
             case 4:
                 os.system("cls")
@@ -170,4 +226,14 @@ while True:
                         print(f"Horas restantes: {diferenca}h")
                         print("-" * 20)
                 print()
-                voltar = input("Aperte enter para voltar a tela principal.")
+                input("Aperte enter para voltar a tela principal.")
+            case 5:
+                os.system("cls")
+                print("Salvando...")
+                time.sleep(0.8)
+                os.system("cls")
+                print("Dados salvos.")
+                time.sleep(.5)
+                print("Fechando programa...")
+                time.sleep(1)
+                break
