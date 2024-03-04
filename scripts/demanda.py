@@ -160,29 +160,28 @@ while True:
                             print("Para voltar a qualquer momento aperte 'Enter'\n")
                             cadastrar_numero = input("Digite o NÚMERO da demanda: ")
                             
-                            if cadastrar_numero != "":
+                            if cadastrar_numero != "" and cadastrar_numero not in demandas:
                                 cadastrar_titulo = input("Digite o TÍTULO da demanda: ")
                                 
                                 if cadastrar_titulo != "":    
                                     cadastrar_estimativa = input("Digite a estimativa de horas da demanda: ")
                                     
                                     if str(cadastrar_estimativa) != "" and cadastrar_estimativa.isdigit():    
-                                        if cadastrar_numero not in demandas:
-                                            
-                                            cadastro_dict = {}
-                                            cadastro_dict[cadastrar_numero] = {"titulo": cadastrar_titulo, "estimativa": int(cadastrar_estimativa), "datas": {}}
-                                            demandas.update(cadastro_dict)
-                                            with open("demandas.json" , "w") as f:
-                                                json.dump(demandas , f, indent=4) # atualizar lista
-                                            print(f"Demanda ({cadastrar_numero}) adicionada com sucesso!")
-                                            time.sleep(2)
-                                            break
-                                        else:
-                                            print("Não foi posssível cadastrar essa demanda (Há outra com o mesmo número registrada).")
-                                            time.sleep(3)
+                                        cadastro_dict = {}
+                                        cadastro_dict[cadastrar_numero] = {"titulo": cadastrar_titulo, "estimativa": int(cadastrar_estimativa), "datas": {}}
+                                        demandas.update(cadastro_dict)
+                                        with open("demandas.json" , "w") as f:
+                                            json.dump(demandas , f, indent=4) # atualizar lista
+                                        print(f"Demanda ({cadastrar_numero}) adicionada com sucesso!")
+                                        time.sleep(2)
+                                        break
                                     else:
                                         print("Operação cancelada ou formato inválido.")
-                                        time.sleep(1)
+                                        time.sleep(1.5)
+                            else:
+                                print("Não foi posssível cadastrar essa demanda (Há outra com o mesmo número registrada).")
+                                time.sleep(3)
+                        
                         case "2":
                             remover_demanda = input("Digite o número da demanda que deseja remover: ")
                             if remover_demanda != "":
@@ -202,6 +201,10 @@ while True:
                             editar_demanda = input("Digite o número da demanda que quer editar")
                             if editar_demanda not in demandas:
                                 print("Demanda não encontrada")
+                            else:
+                                print("Estou trabalhando nessa funcionalidade. ;)")
+                                time.sleep(3)
+                        
                         case "":
                             break
 
