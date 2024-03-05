@@ -198,12 +198,107 @@ while True:
                                         print(f"Demanda {remover_demanda} excluída com sucesso.")
                                         time.sleep(1)
                         case "3":
-                            editar_demanda = input("Digite o número da demanda que quer editar")
+                            editar_demanda = input("Digite o número da demanda que quer editar: ")
                             if editar_demanda not in demandas:
                                 print("Demanda não encontrada")
+                                time.sleep(1)
                             else:
-                                print("Estou trabalhando nessa funcionalidade. ;)")
-                                time.sleep(3)
+                                os.system("cls")
+                                a = demandas[editar_demanda]
+                                lista = list(demandas[editar_demanda]["datas"].items())
+                                print(f"{editar_demanda}: {a['titulo']}")
+                                print(f"Estimativa: {a['estimativa']}h")
+                                for data in lista:
+                                    print(f"{data[0]}: {data[1]}h")
+                                
+                                
+                                print("\nDigite qual a informação que deseja alterar (Ex: 'titulo')")
+                                escolher_info = input("> ")
+                                
+                                
+                                if escolher_info == "titulo":
+                                    editar_titulo = input("Digite o novo nome do titulo: ")
+                                    if editar_titulo != "":
+                                        print(f"Você deseja confirmar a alteração para '{editar_titulo}'? (s/n)")
+                                        choice = input("> ")
+                                        if choice.upper() == "S":
+                                            demandas[editar_demanda]["titulo"] = editar_titulo
+                                            with open("demandas.json", "w") as f:
+                                                json.dump(demandas, f, indent=4)
+                                            print("Demanda atualizada com sucesso!")
+                                            time.sleep(1)
+                                            break
+
+                                elif escolher_info == "estimativa":
+                                    editar_estimativa = input("Digite a nova quantidade de horas de estimativa: ")
+                                    if editar_estimativa != "":
+                                        print(f"Você deseja confirmar a alteração para {editar_estimativa}h? (s/n)")
+                                        choice = input("> ")
+                                        if choice in ["s", "S"] and editar_estimativa.isdigit():
+                                            demandas[editar_demanda]["estimativa"] = int(editar_estimativa)
+                                            with open("demandas.json", "w") as f:
+                                                json.dump(demandas, f, indent=4)
+                                            print("Demanda atualizada com sucesso!")
+                                            time.sleep(1)
+                                            break
+                                        else:
+                                            os.system("cls")
+                                            print("Operação cancelada.")
+                                            time.sleep(1.5)
+
+                                elif escolher_info in ["data", "datas", "horas", "hora"]:
+                                    editar_data = input("Digite a data que quer editar, excluir ou modificar horas: ")
+                                    if editar_data != "" and editar_data in demandas[editar_demanda]["datas"]:
+                                        print("1. Mudar data\n2. Mudar horas\n3. Exluir data\n4. Voltar (enter)")
+                                        choice2 = input("> ")
+                                        match choice2:
+                                            case "1":
+                                                trocar_data = input("Digite a nova data. Formato: (dia/mes/anos): ")
+                                                print(f"Você deseja confirmar a alteração para '{trocar_data}'? (s/n)")
+                                                choice = input("> ")
+                                                if choice in ["s", "S"]:
+                                                    x = demandas[editar_demanda]["datas"][editar_data]
+                                                    del demandas[editar_demanda]["datas"][editar_data]
+                                                    demandas[editar_demanda]["datas"][trocar_data] = x
+                                                    with open("demandas.json", "w") as f:
+                                                        json.dump(demandas, f, indent=4)
+                                                    print("Demanda atualizada com sucesso!")
+                                                    time.sleep(1)
+                                                    break
+                                            case "2":
+                                                escolha_horas = input("Digite a nova quantidade de horas: ")
+                                                if escolha_horas != "" and escolha_horas.isdigit():
+                                                    certeza = input(f"Você tem certeza que quer alterar as horas para {escolha_horas}h? (s/n): ")
+                                                    if certeza.upper() == "S":
+                                                        demandas[editar_demanda]["datas"][editar_data] = int(escolha_horas)
+                                                        with open("demandas.json", "w") as f:
+                                                            json.dump(demandas, f, indent=4)
+                                                        os.system("cls")
+                                                        print("Quantidade de horas alterado com sucesso!")
+                                                        time.sleep(1)
+                                                else:
+                                                    os.system("cls")
+                                                    print("Operação cancelada.")
+                                                    time.sleep(1.5)
+                                            case "3":
+                                                print(f"Você tem certeza que quer excluir a data {editar_data} da demanda {editar_demanda}? (s/n)")
+                                                choice3 = input("> ")
+                                                if choice3.upper() == "S":
+                                                    del demandas[editar_demanda]["datas"][editar_data]
+                                                    with open("demandas.json", "w") as f:
+                                                        json.dump(demandas, f, indent=4)
+                                                    print("Data excluída com sucesso!")
+                                                    time.sleep(1)
+                                    else:
+                                        os.system("cls")
+                                        print("Operação cancelada")
+                                        time.sleep(1.5)
+                                
+                                elif escolher_info == "numero":
+                                    print("Estou trabalhando nessa funcionalidade. ;)") 
+                                    time.sleep(3)
+                                
+                                
                         
                         case "":
                             break
