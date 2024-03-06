@@ -68,25 +68,46 @@ while True:
                                 
                                 if data_settings == "1":
                                     data = datetime.now().date().strftime("%d/%m/%Y")
-                                    computar_dict = {}
-                                    computar_dict = {data: int(computar_horas)}
-                                    demandas[num]["datas"].update(computar_dict)
-                                    with open("demandas.json" , "w") as f:
-                                        json.dump(demandas , f, indent=4)
-                                    print("Horas computadas com sucesso!")
-                                    time.sleep(1)
-                                    break
-                                
+                                    if data in demandas[num]["datas"]:
+                                        computar_dict = {}
+                                        computar_dict = {data: int(computar_horas) + demandas[num]["datas"][data]}
+                                        demandas[num]["datas"].update(computar_dict)
+                                        with open("demandas.json" , "w") as f:
+                                            json.dump(demandas , f, indent=4)
+                                        print("Horas computadas com sucesso!")
+                                        time.sleep(1)
+                                        break
+
+                                    else:
+                                        computar_dict = {}
+                                        computar_dict = {data: int(computar_horas)}
+                                        demandas[num]["datas"].update(computar_dict)
+                                        with open("demandas.json" , "w") as f:
+                                            json.dump(demandas , f, indent=4)
+                                        print("Horas computadas com sucesso!")
+                                        time.sleep(1)
+                                        break
+                            
                                 elif data_settings == "2":
                                     data_input = input("Digite a data (formato: dia/mes/ano): ")
-                                    computar_dict = {}
-                                    computar_dict = {data_input: int(computar_horas)}
-                                    demandas[num]["datas"].update(computar_dict)
-                                    with open("demandas.json" , "w") as f:
-                                        json.dump(demandas , f, indent=4)
-                                    print("Horas computadas com sucesso!")
-                                    time.sleep(1)
-                                    break
+                                    if data_input in demandas[num]["datas"]:
+                                        computar_dict = {}
+                                        computar_dict = {data_input: int(computar_horas) + demandas[num]["datas"][data_input]}
+                                        demandas[num]["datas"].update(computar_dict)
+                                        with open("demandas.json" , "w") as f:
+                                            json.dump(demandas , f, indent=4)
+                                        print("Horas computadas com sucesso!")
+                                        time.sleep(1)
+                                        break    
+                                    else:
+                                        computar_dict = {}
+                                        computar_dict = {data_input: int(computar_horas)}
+                                        demandas[num]["datas"].update(computar_dict)
+                                        with open("demandas.json" , "w") as f:
+                                            json.dump(demandas , f, indent=4)
+                                        print("Horas computadas com sucesso!")
+                                        time.sleep(1)
+                                        break
                             else:
                                 print("Formato inválido.")
                                 time.sleep(1)
@@ -113,26 +134,47 @@ while True:
                                     
                                     if data_settings == "1":
                                         data = datetime.now().date().strftime("%d/%m/%Y")
-                                        computar_dict = {}
-                                        computar_dict = {data: int(computar_horas)}
-                                        demandas[num]["datas"].update(computar_dict)
-                                        with open("demandas.json" , "w") as f:
-                                            json.dump(demandas , f, indent=4)
-                                        print("Horas computadas com sucesso!")
-                                        time.sleep(1)
-                                        break
+                                        if data in demandas[num]["datas"]:
+                                            computar_dict = {}
+                                            computar_dict = {data: int(computar_horas) + demandas[num]["datas"][data]}
+                                            demandas[num]["datas"].update(computar_dict)
+                                            with open("demandas.json" , "w") as f:
+                                                json.dump(demandas , f, indent=4)
+                                            print("Horas computadas com sucesso!")
+                                            time.sleep(1)
+                                            break
+
+                                        else:
+                                            computar_dict = {}
+                                            computar_dict = {data: int(computar_horas)}
+                                            demandas[num]["datas"].update(computar_dict)
+                                            with open("demandas.json" , "w") as f:
+                                                json.dump(demandas , f, indent=4)
+                                            print("Horas computadas com sucesso!")
+                                            time.sleep(1)
+                                            break
 
                                     
                                     elif data_settings == "2":
                                         data_input = input("Digite a data (formato: dia/mes/ano): ")
-                                        computar_dict = {}
-                                        computar_dict = {data_input: int(computar_horas)}
-                                        demandas[num]["datas"].update(computar_dict)
-                                        with open("demandas.json" , "w") as f:
-                                            json.dump(demandas , f, indent=4)
-                                        print("Horas computadas com sucesso!")
-                                        time.sleep(1)
-                                        break
+                                        if data_input in demandas[num]["datas"]:
+                                            computar_dict = {}
+                                            computar_dict = {data_input: int(computar_horas) + demandas[num]["datas"][data_input]}
+                                            demandas[num]["datas"].update(computar_dict)
+                                            with open("demandas.json" , "w") as f:
+                                                json.dump(demandas , f, indent=4)
+                                            print("Horas computadas com sucesso!")
+                                            time.sleep(1)
+                                            break    
+                                        else:
+                                            computar_dict = {}
+                                            computar_dict = {data_input: int(computar_horas)}
+                                            demandas[num]["datas"].update(computar_dict)
+                                            with open("demandas.json" , "w") as f:
+                                                json.dump(demandas , f, indent=4)
+                                            print("Horas computadas com sucesso!")
+                                            time.sleep(1)
+                                            break
                                 else:
                                     print("Formato inválido.")
                                     time.sleep(1)
