@@ -2,12 +2,19 @@ import os
 import time
 import json
 from datetime import datetime
+from colorama import init, Fore
+init()
+verde = Fore.GREEN
+azul = Fore.LIGHTBLUE_EX
+amarelo = Fore.YELLOW
+red = Fore.LIGHTRED_EX
+roxo = Fore.LIGHTMAGENTA_EX
 
 def status():
     if diferenca <= 0:
-        status = "concluída"
+        status = verde + "concluída" + Fore.RESET
     else:
-        status = "ativa"
+        status = azul + "ativa" + Fore.RESET
     return status
 
 def salvar_horas(data,soma):
@@ -26,11 +33,11 @@ def atualizar_demanda(texto):
     time.sleep(1)
 
 def printar_demanda():
-    print(f"{num} - {demandas[num]['titulo']}")
-    print(f"Estimativa: {demandas[num]['estimativa']}h")
+    print(amarelo + f"{num} - {demandas[num]['titulo']}" + Fore.RESET)
+    print(f"Estimativa: {roxo}{demandas[num]['estimativa']}h{Fore.RESET}")
     print(f"Status: {status()}")
-    print(f"Horas gastas: {soma}h")
-    print(f"Horas restantes: {diferenca}h")
+    print(f"Horas gastas: {verde}{soma}h{Fore.RESET}")
+    print(f"Horas restantes: {red}{diferenca}h{Fore.RESET}")
 
 while True: # loop principal
     demanda_numero = [] # sempre recomeçar vazio para nâo dar erro
