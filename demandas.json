@@ -14,14 +14,6 @@
             "10/02/2024": 0
         }
     },
-    "4321": {
-        "titulo": "titulo teste",
-        "estimativa": 20,
-        "datas": {
-            "02/03/2024": 2,
-            "05/03/2024": 4
-        }
-    },
     "7182": {
         "titulo": "titulo4",
         "estimativa": 20,
@@ -31,5 +23,13 @@
         "titulo": "titulo teste",
         "estimativa": 40,
         "datas": {}
+    },
+    "4321": {
+        "titulo": "titulo teste",
+        "estimativa": 20,
+        "datas": {
+            "02/03/2024": 2,
+            "05/03/2024": 4
+        }
     }
 }

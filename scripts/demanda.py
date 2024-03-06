@@ -182,8 +182,8 @@ while True: # loop principal
                                         print("Operação cancelada ou formato inválido.")
                                         time.sleep(1.5)
                             else:
-                                print("Não foi posssível cadastrar essa demanda.")
-                                time.sleep(3)
+                                print("Operação cancelada ou número já registrado.")
+                                time.sleep(1.5)
                         
                         case "2": # Remover demanda
                             remover_demanda = input("Digite o número da demanda que deseja remover: ")
@@ -214,7 +214,7 @@ while True: # loop principal
                                 print(f"Estimativa: {a['estimativa']}h")
                                 for data in lista:
                                     print(f"{data[0]}: {data[1]}h")
-                                print("\nDigite qual a informação que deseja alterar (Ex: 'titulo', 'estimativa', 'data', 'hora')")
+                                print("\nDigite qual a informação que deseja alterar (Ex: 'numero', 'titulo', 'estimativa', 'data', 'hora')")
                                 escolher_info = input("> ")
                                 
                                 
@@ -285,14 +285,24 @@ while True: # loop principal
                                         print("Operação cancelada")
                                         time.sleep(1.5)
                                 
-                                elif escolher_info == "numero":
-                                    print("Estou trabalhando nessa funcionalidade. ;)") 
-                                    time.sleep(3)
-                                                        
+                                elif escolher_info == "numero": # Editar numero demanda
+                                    escolha_numero = input("Digite o novo número da demanda: ")
+                                    if escolha_numero != ""and escolha_numero not in demandas:
+                                        print(f"Você tem certeza que deseja alterar o número dessa demanda para {escolha_numero}? (s/n)")
+                                        decisao = input("> ")
+                                        if decisao.upper() == "S":
+                                            x = demandas[editar_demanda]
+                                            del demandas[editar_demanda]
+                                            demandas[escolha_numero] = x
+                                            atualizar_demanda("Demanda atualizada com sucesso!") 
+                                    else:
+                                        print("Operação cancelada ou número já registrado.")
+                                        time.sleep(1)
+                                                                   
                         case "":
                             break
  
-            case 3:
+            case 3: # Exibir demandas ativas
                 os.system("cls")      
                 for num in demandas:
                     soma = 0
@@ -306,7 +316,7 @@ while True: # loop principal
                 print()
                 input("Aperte enter para voltar a tela principal.")
                              
-            case 4:
+            case 4: # Exibir demandas concluídas
                 os.system("cls")
                 for num in demandas:
                     soma = 0
@@ -321,13 +331,13 @@ while True: # loop principal
                 input("Aperte enter para voltar a tela principal.")
            
            
-            case 5:
+            case 5: # Fechar programa
                 os.system("cls")
                 print("Salvando...")
                 time.sleep(0.8)
                 os.system("cls")
                 print("Dados salvos.")
-                time.sleep(.5)
+                time.sleep(0.5)
                 print("Fechando programa...")
                 time.sleep(1)
                 break
