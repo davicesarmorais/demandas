@@ -84,6 +84,7 @@ while True: # loop principal
                         
                         
                         if input_horas_ver_detalhes == "1": # Computar horas (- detalhes)
+                            os.system("cls")
                             computar_horas = input("Digite as horas: ")
                             if computar_horas != "" and computar_horas.isdigit():
                                 print("1. Usar data automatica\n2. Digitar data manualmente\n3. Cancelar (enter)")
@@ -107,19 +108,21 @@ while True: # loop principal
                                         salvar_horas(data_input, 0)
                                         break
                             else:
-                                print("Formato inválido.")
+                                print("Operaçõa cancelada ou formato inválido.")
                                 time.sleep(1)
                         
                         elif input_horas_ver_detalhes == "2": # Ver detalhes
                             os.system("cls")
                             lista = list(demandas[num]["datas"].items())
                             printar_demanda() 
+                            print()
                             for item in lista:
                                 print(f"{item[0]}: {item[1]}h")
                             print("\n1. Inputar horas\n2. Ver menos detalhes\n3. Voltar (enter)")
                             input_horas_ver_detalhes = input("> ")
                             
                             if input_horas_ver_detalhes == "1": # Computar horas (+ detalhes)
+                                os.system("cls")
                                 computar_horas = input("Digite as horas: ")
                                 if computar_horas != "" and computar_horas.isdigit():
                                     print("1. Usar data automatica\n2. Digitar data manualmente\n3. Cancelar (enter)")
@@ -143,7 +146,7 @@ while True: # loop principal
                                             salvar_horas(data_input, 0)
                                             break
                                 else:
-                                    print("Formato inválido.")
+                                    print("Operação cancelada ou formato inválido.")
                                     time.sleep(1)
                             
                             elif input_horas_ver_detalhes == "2": # ver menos detalhes
@@ -217,8 +220,8 @@ while True: # loop principal
                                 os.system("cls")
                                 a = demandas[editar_demanda]
                                 lista = list(demandas[editar_demanda]["datas"].items())
-                                print(f"{editar_demanda}: {a['titulo']}")
-                                print(f"Estimativa: {a['estimativa']}h")
+                                print(amarelo + f"{editar_demanda}: {a['titulo']}" + Fore.RESET)
+                                print(f"Estimativa: {roxo}{a['estimativa']}h{Fore.RESET}")
                                 for data in lista:
                                     print(f"{data[0]}: {data[1]}h")
                                 print("\nDigite qual a informação que deseja alterar (Ex: 'numero', 'titulo', 'estimativa', 'data', 'hora')")
