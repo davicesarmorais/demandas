@@ -10,13 +10,6 @@ amarelo = Fore.YELLOW
 red = Fore.LIGHTRED_EX
 roxo = Fore.LIGHTMAGENTA_EX
 
-def status():
-    if diferenca <= 0:
-        status = verde + "concluída" + Fore.RESET
-    else:
-        status = azul + "ativa" + Fore.RESET
-    return status
-
 def salvar_horas(data,soma):
     computar_dict = {}
     computar_dict = {data: int(computar_horas) + soma}
@@ -311,7 +304,6 @@ while True: # loop principal
                                         print("Operação cancelada ou número já registrado.")
                                         time.sleep(1)
                                                                 
-
         case "3": # Exibir demandas ativas
             os.system("cls")      
             for num in demandas:
@@ -339,7 +331,6 @@ while True: # loop principal
                     print("-" * 20)
             print()
             input("Aperte enter para voltar a tela principal.")
-        
         
         case "5": # Fechar programa
             os.system("cls")
