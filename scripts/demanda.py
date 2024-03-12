@@ -155,7 +155,7 @@ while True: # loop principal
                         case _: # voltar
                             break
       
-        case "2": # Editar demandas principal
+        case "2": # Cadastrar demandas principal
             while True:
                 os.system("cls")
                 print("1. Adicionar demanda\n2. Remover demanda\n3. Editar demanda\n4. Voltar (enter)")
@@ -178,8 +178,7 @@ while True: # loop principal
                                     cadastro_dict = {}
                                     cadastro_dict[cadastrar_numero] = {"titulo": cadastrar_titulo, "estimativa": int(cadastrar_estimativa), "status": "ativa", "datas": {}}
                                     demandas.update(cadastro_dict)
-                                    with open("demandas.json" , "w") as f:
-                                        json.dump(demandas , f, indent=4) # atualizar lista
+                                    atualizar_demanda(None, False) # atualizar lista
                                     print(f"Demanda ({cadastrar_numero}) adicionada com sucesso!")
                                     time.sleep(2)
                                     break
@@ -201,8 +200,7 @@ while True: # loop principal
                                 confirmacao = input("> ")
                                 if confirmacao.upper() == "S":
                                     del demandas[remover_demanda]
-                                    with open("demandas.json" , "w") as f:
-                                        json.dump(demandas , f, indent=4)
+                                    atualizar_demanda(None, False)
                                     print(f"Demanda {remover_demanda} excluída com sucesso.")
                                     time.sleep(1)
                     
@@ -311,7 +309,11 @@ while True: # loop principal
                                                                 
         case "3": # Exibir demandas ativas
             os.system("cls")      
+            a = []
             for num in demandas:
+                a.append(num)
+            a.sort()
+            for num in a[::-1]:
                 soma = 0
                 for item in demandas[num]["datas"].items():
                     soma = soma + int(item[1])
@@ -325,7 +327,11 @@ while True: # loop principal
                             
         case "4": # Exibir demandas concluídas
             os.system("cls")
+            a = []
             for num in demandas:
+                a.append(num)
+            a.sort()
+            for num in a[::-1]:
                 soma = 0
                 for item in demandas[num]["datas"].items():
                     soma = soma + int(item[1])
