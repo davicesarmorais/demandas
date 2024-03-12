@@ -2,9 +2,15 @@
     "1234": {
         "titulo": "titulo",
         "estimativa": 40,
-        "status": "ativa",
         "datas": {
             "a": 1
-        }
+        },
+        "status": "concluida"
+    },
+    "1": {
+        "titulo": "a",
+        "estimativa": 1,
+        "status": "concluida",
+        "datas": {}
     }
 }

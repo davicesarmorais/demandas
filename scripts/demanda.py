@@ -19,11 +19,12 @@ def salvar_horas(data,soma):
     print("Horas computadas com sucesso!")
     time.sleep(1)
 
-def atualizar_demanda(texto):
+def atualizar_demanda(texto, printar):
     with open("demandas.json", "w") as f:
         json.dump(demandas, f, indent=4)
-    print(texto)
-    time.sleep(1)
+    if printar == True:
+        print(texto)
+        time.sleep(1)
 
 def printar_demanda():
     status = demandas[num]['status']
@@ -64,6 +65,10 @@ while True: # loop principal
             for numero in demandas:
                 demanda_numero.append(numero)
                 demanda_titulo.append(demandas[numero]["titulo"])
+                if 'status' not in demandas[numero]:
+                    demandas[numero]['status'] = "ativa"
+                    atualizar_demanda(None,False)
+                
                 
     except FileNotFoundError: # cria arquivo json se nao existir
         demandas = {}
@@ -114,14 +119,14 @@ while True: # loop principal
                                 decisao = input("> ")
                                 if decisao.upper() == "S":
                                     demandas[num]["status"] = "concluida"
-                                    atualizar_demanda("Demanda atualizada com sucesso!")
+                                    atualizar_demanda("Demanda atualizada com sucesso!", True)
 
                             elif demandas[num]["status"] == "concluida":
                                 print("Você deseja marca essa demanda como ativa? (s/n)")
                                 decisao = input("> ")
                                 if decisao.upper() == "S":
                                     demandas[num]["status"] = "ativa"
-                                    atualizar_demanda("Demanda atualizada com sucesso!")
+                                    atualizar_demanda("Demanda atualizada com sucesso!", True)
                         
                         case "3": # Ver detalhes
                             os.system("cls")
@@ -225,7 +230,7 @@ while True: # loop principal
                                         choice = input("> ")
                                         if choice.upper() == "S":
                                             demandas[editar_demanda]["titulo"] = editar_titulo
-                                            atualizar_demanda("Demanda atualizada com sucesso!")
+                                            atualizar_demanda("Demanda atualizada com sucesso!", True)
                                             break
 
                                 case "estimativa": # Editar estimativa
@@ -235,7 +240,7 @@ while True: # loop principal
                                         choice = input("> ")
                                         if choice in ["s", "S"] and editar_estimativa.isdigit():
                                             demandas[editar_demanda]["estimativa"] = int(editar_estimativa)
-                                            atualizar_demanda("Demanda atualizada com sucesso!")
+                                            atualizar_demanda("Demanda atualizada com sucesso!", True)
                                             break
                                         else:
                                             os.system("cls")
@@ -266,7 +271,7 @@ while True: # loop principal
                                                         x = demandas[editar_demanda]["datas"][editar_data]
                                                         del demandas[editar_demanda]["datas"][editar_data]
                                                         demandas[editar_demanda]["datas"][trocar_data] = x
-                                                        atualizar_demanda("Demanda atualizada com sucesso!")
+                                                        atualizar_demanda("Demanda atualizada com sucesso!", True)
                                                         break
                                             
                                             case "2": # Editar horas
@@ -275,7 +280,7 @@ while True: # loop principal
                                                     certeza = input(f"Você tem certeza que quer alterar as horas para {escolha_horas}h? (s/n): ")
                                                     if certeza.upper() == "S":
                                                         demandas[editar_demanda]["datas"][editar_data] = int(escolha_horas)
-                                                        atualizar_demanda("Demanda atualizada com sucesso!")
+                                                        atualizar_demanda("Demanda atualizada com sucesso!", True)
                                                         break
                                                 else:
                                                     os.system("cls")
@@ -287,7 +292,7 @@ while True: # loop principal
                                                 choice3 = input("> ")
                                                 if choice3.upper() == "S":
                                                     del demandas[editar_demanda]["datas"][editar_data]
-                                                    atualizar_demanda('Data excluída com sucesso!')
+                                                    atualizar_demanda('Data excluída com sucesso!', True)
                                                     break
                            
                                 case "numero": # Editar numero demanda
@@ -299,7 +304,7 @@ while True: # loop principal
                                             x = demandas[editar_demanda]
                                             del demandas[editar_demanda]
                                             demandas[escolha_numero] = x
-                                            atualizar_demanda("Demanda atualizada com sucesso!") 
+                                            atualizar_demanda("Demanda atualizada com sucesso!", True) 
                                     else:
                                         print("Operação cancelada ou número já registrado.")
                                         time.sleep(1)
