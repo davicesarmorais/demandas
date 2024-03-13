@@ -76,7 +76,7 @@ while True: # loop principal
             json.dump(demandas, f, indent=4) 
     
     os.system("cls")
-    print("1. Pesquisar demanda.\n2. Cadastrar/Editar demanda.\n3. Listar demandas em execução\n4. Listar demandas concluídas.\n5. Salvar e fechar programa.")
+    print("1. Pesquisar demanda.\n2. Cadastrar/Editar demanda.\n3. Relatórios\n4. Listar demandas em execução\n5. Listar demandas concluídas.\n6. Salvar e fechar programa.")
     principal_input = (input("> "))
     match principal_input:
         
@@ -150,9 +150,9 @@ while True: # loop principal
                                 
                                 case "2": # ver menos detalhes
                                     os.system("cls")
-                                case _: # voltar
+                                case "3"|"": # voltar
                                     break
-                        case _: # voltar
+                        case "4"|"": # voltar
                             break
       
         case "2": # Cadastrar demandas principal
@@ -161,7 +161,7 @@ while True: # loop principal
                 print("1. Adicionar demanda\n2. Remover demanda\n3. Editar demanda\n4. Voltar (enter)")
                 editar_input = input("> ")
                 match editar_input:
-                    case "":
+                    case "4"|"":
                         break
                     case "1": # Adicionar demanda
                         os.system("cls")
@@ -307,7 +307,65 @@ while True: # loop principal
                                         print("Operação cancelada ou número já registrado.")
                                         time.sleep(1)
                                                                 
-        case "3": # Exibir demandas ativas
+        case "3": # Relatórios
+            while True:
+                os.system('cls')
+                print("1. Data específica.\n2. Mês específico.\n3. Período.\n4. Voltar (enter).")
+                relatorio_input = input("> ")
+                match relatorio_input:
+                    case "1":
+                        data_especifica = input("Digite uma data específica (Formato: dd/mm/yyyy): ")
+                        if data_especifica != "":
+                            os.system('cls')
+                            for num in demandas:
+                                if data_especifica in demandas[num]["datas"]:
+                                    print(f"{amarelo + num} - {demandas[num]["titulo"] + Fore.RESET}")
+                                    print(azul + f"Horas registradas nessa data: {demandas[num]["datas"][data_especifica]}" + Fore.RESET)
+                                    print("-" * 30)
+                            input("Aperte 'enter' para voltar.")
+                    case "2":
+                        meses = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"]
+                        entrada = input("Digite o mês e o ano (Formato: maio-2024 ou 05-2024): ")
+                        if entrada != "":
+                            if "/" in entrada:
+                                mes, ano = entrada.split("/")
+                            elif "-" in entrada:
+                                mes, ano = entrada.split("-") 
+                            else:
+                                mes, ano = None, None
+                                print("Formato inválido.")
+                                time.sleep(1)
+                            if (mes != None and ano != None):
+                                os.system("cls")
+                                if mes in meses:
+                                    mes_numero = meses.index(mes) + 1
+                                    mes_numero = "0" + str(mes_numero)
+                                elif mes == "marco":
+                                    mes_numero = 3
+                                    mes_numero = "0" + str(mes_numero)
+                                elif mes.isdigit() and int(mes) in range(1,13):
+                                    mes_numero = mes
+                                mes_numero_formatado = str(mes_numero)
+                                a = []
+                                for num in demandas:
+                                    a.append(num)
+                                a.sort()
+                                for num in a[::-1]:
+                                    for data in demandas[num]["datas"]:
+                                        dia_json,mes_json,ano_json = data.split("/")
+                                        if mes_numero_formatado == mes_json and ano == ano_json:
+                                            print(f"{amarelo + num} - {demandas[num]["titulo"] + Fore.RESET}")
+                                            print(azul + f"Horas registradas em {data}: {demandas[num]["datas"][data]}" + Fore.RESET)
+                                            print("-" * 30)
+                                input("Aperte 'enter' para voltar.")
+                    case "3":
+                        periodo1,periodo2 = input("Digite um período (Formato: '01/01/2023-01/01/2024'): ").split("-")
+                    
+                    case "4"|"":
+                        break
+            
+        
+        case "4": # Exibir demandas ativas
             os.system("cls")      
             a = []
             for num in demandas:
@@ -325,7 +383,7 @@ while True: # loop principal
             print()
             input("Aperte enter para voltar a tela principal.")
                             
-        case "4": # Exibir demandas concluídas
+        case "5": # Exibir demandas concluídas
             os.system("cls")
             a = []
             for num in demandas:
@@ -343,7 +401,7 @@ while True: # loop principal
             print()
             input("Aperte enter para voltar a tela principal.")
         
-        case "5": # Fechar programa
+        case "6": # Fechar programa
             os.system("cls")
             print("Salvando...")
             time.sleep(0.8)
