@@ -317,12 +317,16 @@ while True: # loop principal
                         data_especifica = input("Digite uma data específica (Formato: dd/mm/yyyy): ")
                         if data_especifica != "":
                             os.system('cls')
+                            soma = 0
                             for num in demandas:
                                 if data_especifica in demandas[num]["datas"]:
-                                    print(f"{amarelo + num} - {demandas[num]["titulo"] + Fore.RESET}")
-                                    print(azul + f"Horas registradas nessa data: {demandas[num]["datas"][data_especifica]}" + Fore.RESET)
+                                    soma = soma + demandas[num]["datas"][data_especifica]
+                                    print(f"{amarelo + num} - {demandas[num]['titulo'] + Fore.RESET}")
+                                    print(azul + f"Horas registradas nessa data: {demandas[num]['datas'][data_especifica]}" + Fore.RESET)
                                     print("-" * 30)
+                            print(verde + "Horas totais:", soma, Fore.RESET, "\n")
                             input("Aperte 'enter' para voltar.")
+                    
                     case "2":
                         meses = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"]
                         entrada = input("Digite o mês e o ano (Formato: maio-2024 ou 05-2024): ")
@@ -350,13 +354,16 @@ while True: # loop principal
                                 for num in demandas:
                                     a.append(num)
                                 a.sort()
+                                soma = 0
                                 for num in a[::-1]:
                                     for data in demandas[num]["datas"]:
                                         dia_json,mes_json,ano_json = data.split("/")
                                         if mes_numero_formatado == mes_json and ano == ano_json:
-                                            print(f"{amarelo + num} - {demandas[num]["titulo"] + Fore.RESET}")
-                                            print(azul + f"Horas registradas em {data}: {demandas[num]["datas"][data]}" + Fore.RESET)
+                                            soma = soma + demandas[num]["datas"][data]
+                                            print(f"{amarelo + num} - {demandas[num]['titulo'] + Fore.RESET}")
+                                            print(azul + f"Horas registradas em {data}: {demandas[num]['datas'][data]}" + Fore.RESET)
                                             print("-" * 30)
+                                print(verde + "Horas totais:", soma, Fore.RESET, "\n")
                                 input("Aperte 'enter' para voltar.")
                     case "3":
                         periodo1,periodo2 = input("Digite um período (Formato: '01/01/2023-01/01/2024'): ").split("-")
