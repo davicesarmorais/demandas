@@ -1,7 +1,7 @@
 import os
 import time
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 from colorama import init, Fore
 init()
 verde = Fore.GREEN
@@ -76,7 +76,7 @@ while True: # loop principal
             json.dump(demandas, f, indent=4) 
     
     os.system("cls")
-    print("1. Pesquisar demanda.\n2. Cadastrar/Editar demanda.\n3. Relatórios\n4. Listar demandas em execução\n5. Listar demandas concluídas.\n6. Salvar e fechar programa.")
+    print("[?] - Ajuda\n\n1. Pesquisar demanda\n2. Cadastrar/Editar demanda\n3. Ver relatórios de apontamentos\n4. Listar demandas em execução\n5. Listar demandas concluídas\n6. Salvar e fechar programa")
     principal_input = (input("> "))
     match principal_input:
         
@@ -135,7 +135,7 @@ while True: # loop principal
                             for item in lista_data:
                                 print(f"{item[0]}: {item[1]}h")
                             
-                            print("\n1. Inputar horas\n2. Ver menos detalhes\n3. Voltar tudo (enter)")
+                            print("\n1. Inputar horas\n2. Marcar como concluida/ativa\n3. Ver menos detalhes\n3. Voltar tudo (enter)")
                             input_horas_ver_detalhes = input("> ")     
                             match input_horas_ver_detalhes:
                                 
@@ -147,10 +147,24 @@ while True: # loop principal
                                     else:
                                         settings_data()
                                         break                       
+                                case "2":
+                                    if demandas[num]["status"] == "ativa":
+                                        print("Você deseja marcar essa demanda como concluída? (s/n)")
+                                        decisao = input("> ")
+                                        if decisao.upper() == "S":
+                                            demandas[num]["status"] = "concluida"
+                                            atualizar_demanda("Demanda atualizada com sucesso!", True)
+
+                                    elif demandas[num]["status"] == "concluida":
+                                        print("Você deseja marca essa demanda como ativa? (s/n)")
+                                        decisao = input("> ")
+                                        if decisao.upper() == "S":
+                                            demandas[num]["status"] = "ativa"
+                                            atualizar_demanda("Demanda atualizada com sucesso!", True)
                                 
-                                case "2": # ver menos detalhes
+                                case "3": # ver menos detalhes
                                     os.system("cls")
-                                case "3"|"": # voltar
+                                case "4"|"": # voltar
                                     break
                         case "4"|"": # voltar
                             break
@@ -275,7 +289,8 @@ while True: # loop principal
                                             case "2": # Editar horas
                                                 escolha_horas = input("Digite a nova quantidade de horas: ")
                                                 if escolha_horas != "" and escolha_horas.isdigit():
-                                                    certeza = input(f"Você tem certeza que quer alterar as horas para {escolha_horas}h? (s/n): ")
+                                                    print(f"Você tem certeza que quer alterar as horas para {escolha_horas}h? (s/n)")
+                                                    certeza = input("> ")
                                                     if certeza.upper() == "S":
                                                         demandas[editar_demanda]["datas"][editar_data] = int(escolha_horas)
                                                         atualizar_demanda("Demanda atualizada com sucesso!", True)
@@ -310,9 +325,11 @@ while True: # loop principal
         case "3": # Relatórios
             while True:
                 os.system('cls')
-                print("1. Data específica.\n2. Mês específico.\n3. Período.\n4. Voltar (enter).")
+                print("1. Data específica\n2. Mês específico\n3. Período\n4. Voltar (enter)")
                 relatorio_input = input("> ")
                 match relatorio_input:
+                    case "4"|"":
+                        break
                     case "1":
                         data_especifica = input("Digite uma data específica (Formato: dd/mm/yyyy): ")
                         if data_especifica != "":
@@ -339,6 +356,7 @@ while True: # loop principal
                                 mes, ano = None, None
                                 print("Formato inválido.")
                                 time.sleep(1)
+                            
                             if (mes != None and ano != None):
                                 os.system("cls")
                                 if mes in meses:
@@ -361,17 +379,44 @@ while True: # loop principal
                                         if mes_numero_formatado == mes_json and ano == ano_json:
                                             soma = soma + demandas[num]["datas"][data]
                                             print(f"{amarelo + num} - {demandas[num]['titulo'] + Fore.RESET}")
-                                            print(azul + f"Horas registradas em {data}: {demandas[num]['datas'][data]}" + Fore.RESET)
+                                            print(azul + f"Horas registradas em {data}: {demandas[num]['datas'][data]}h" + Fore.RESET)
                                             print("-" * 30)
                                 print(verde + "Horas totais:", soma, Fore.RESET, "\n")
                                 input("Aperte 'enter' para voltar.")
                     case "3":
-                        periodo1,periodo2 = input("Digite um período (Formato: '01/01/2023-01/01/2024'): ").split("-")
+                        try:
+                            periodo1,periodo2 = input("Digite um período (Formato: '01/01/2023-01/01/2024'): ").split("-")
+                            dia1,mes1,ano1 = periodo1.split("/")
+                            dia2,mes2,ano2 = periodo2.split("/")
+                            data_inicial = datetime(int(ano1), int(mes1), int(dia1))
+                            data_final = datetime(int(ano2), int(mes2), int(dia2))
+                            passo = timedelta(days=1)
+                            datas_range = []
+                            while data_inicial <= data_final:
+                                datas_range.append(data_inicial.strftime("%d/%m/%Y"))
+                                data_inicial += passo
+                            a = []
+                            for num in demandas:
+                                a.append(num)
+                            a.sort()
+                            soma = 0
+                            os.system('cls')
+                            for num in a[::-1]:
+                                for data in demandas[num]["datas"]:
+                                    if data in datas_range:
+                                        soma = soma + demandas[num]["datas"][data]
+                                        print(amarelo + f"{num} - {demandas[num]['titulo']}" + Fore.RESET)
+                                        print(azul + f"Horas registradas em {data}: {demandas[num]['datas'][data]}" + Fore.RESET)
+                                        print("-" * 30)
+                            print(verde + "Horas torais:", soma, Fore.RESET, "\n")
+                            input("Aperte 'enter' para voltar.")
+
+                        except ValueError:
+                            print("Formato inválido.")
+                            time.sleep(1)
                     
-                    case "4"|"":
-                        break
+                    
             
-        
         case "4": # Exibir demandas ativas
             os.system("cls")      
             a = []
@@ -418,3 +463,9 @@ while True: # loop principal
             print("Fechando programa...")
             time.sleep(1)
             break
+        
+        case "?":
+            os.system('cls')
+            print("Para obter ajuda confira o README no github com todas as funções explicadas.")
+            print("\nhttps://github.com/davicesarmorais/demandas/blob/main/README.md\n")
+            input("Aperte 'enter' para voltar.")
