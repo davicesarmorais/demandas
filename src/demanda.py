@@ -232,10 +232,10 @@ while True: # loop principal
                             for data in lista_data:
                                 print(f"{data[0]}: {data[1]}h")
                             print("\nDigite qual a informação que deseja alterar (Ex: 'numero', 'titulo', 'estimativa', 'data', 'hora')")
-                            escolher_info = input("> ")
-                            match escolher_info:
+                            escolher_info = input("> ")                    
+                            match escolher_info.lower():
                             
-                                case "titulo": # Editar titulo
+                                case "titulo"|"título": # Editar titulo
                                     editar_titulo = input("Digite o novo nome do titulo: ")
                                     if editar_titulo != "":
                                         print(f"Você deseja confirmar a alteração para '{editar_titulo}'? (s/n)")
@@ -308,7 +308,7 @@ while True: # loop principal
                                                     atualizar_demanda('Data excluída com sucesso!', True)
                                                     break
                            
-                                case "numero": # Editar numero demanda
+                                case "numero"|"número": # Editar numero demanda
                                     escolha_numero = input("Digite o novo número da demanda: ")
                                     if escolha_numero != ""and escolha_numero not in demandas:
                                         print(f"Você tem certeza que deseja alterar o número dessa demanda para {escolha_numero}? (s/n)")
