@@ -4,6 +4,7 @@
 
   - É um sistema feito para **armazenar e manipular demandas**.
   - É possível _cadastrar demandas_, _editar_, _remover_, _inputar horas_, _ver demandas em execução ou concluidas_, entre outras coisas.
+
 ## Como funciona?
 
   1. **O usuário cadastra uma demanda.**
@@ -26,11 +27,11 @@
       - Há como pesquisar por *data específica*, *mês* ou *período*.
           - Exibe **todos as demandas** e horas gastas da opção escolhida.
   4. **Pode listar as demandas em execução ou concluídas.**
-<br>
-<br>
 
 # Ajuda / Dicas
+
 ## Manejo do software.
+  
   - Para **selecionar** uma categoria, basta digitar alguma opção (*seja um número, ou uma confirmação como s/n*) e aperter enter.
   - Para **cancelar uma ação** ou **retroceder**, é possível apertar *'enter'*, *certifique-se de que não há nenhum caractere no terminal*.
   - Ao **inputar as horas**, o software verifica se há alguma hora inputada na data escolhida e **soma automaticamente**. Não é necessário se preocupar com isso.
