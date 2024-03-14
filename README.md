@@ -54,4 +54,4 @@
       - Ex: Ao cadastrar uma demandas, coloque um número na estimativa das horas.
   - Tente **não fechar o software** enquanto ele processa alguma informação, apesar de ser bem seguro, é bom ter cuidado.
   - **Evite editar o _json_** para não comprometer o funcionamente do software
-  - Caso o _json_ seja **apagado** ou não existir o arquivo, _o software cria um novo arquivo automaticamente_, não precisa criar manualmente. :)
+  - Caso o _json_ seja **apagado** ou não existir o arquivo, _o software cria um novo arquivo automaticamente_, não precisa criar manualmente :)
