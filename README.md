@@ -8,8 +8,8 @@
 ## Como funciona?
 
   1. **O usuário cadastra uma demanda.**
-      - Contendo número;
-      - Título;
+      - Contendo número da demanda;
+      - Título da demanda;
       - Estimativa de horas.
   2. **Pode pesquisar essa demanda.**
       - É **exibida** essa demanda:
