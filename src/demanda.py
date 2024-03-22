@@ -76,7 +76,17 @@ while True: # loop principal
             json.dump(demandas, f, indent=4) 
     
     os.system("cls")
-    print("[?] - Ajuda\n\n1. Pesquisar demanda\n2. Cadastrar/Editar demanda\n3. Ver relatórios de apontamentos\n4. Listar demandas em execução\n5. Listar demandas concluídas\n6. Salvar e fechar programa")
+    print(f"{"Demandas":-^100}")
+    for numero in demandas:
+        print(f"{numero} - {demandas[numero]['titulo']}")
+    print("-" * 100)
+    print("\n1. Pesquisar demanda",
+          "\n2. Cadastrar/Editar demanda",
+          "\n3. Ver relatórios de apontamentos",
+          "\n4. Listar demandas em execução",
+          "\n5. Listar demandas concluídas",
+          "\n6. Salvar e fechar programa",
+          "\n[?] - Ajuda")
     principal_input = (input("> "))
     match principal_input:
         
@@ -100,11 +110,15 @@ while True: # loop principal
                 while True: 
                     os.system("cls")
                     printar_demanda()              
-                    print("\n1. Inputar horas\n2. Marcar como concluida/ativa\n3. Ver detalhes\n4. Voltar (enter)")
+                    print()
+                    for item in lista_data:
+                        print(f"{item[0]}: {item[1]}h")
+                            
+                    print("\n1. Inputar horas\n2. Marcar como concluida/ativa\n3. Voltar (enter)")
                     input_horas_ver_detalhes = input("> ")
                     match input_horas_ver_detalhes:
                     
-                        case "1": # Computar horas (- detalhes)
+                        case "1": # 
                             computar_horas = input("Digite as horas: ")
                             if computar_horas == "" or not computar_horas.isdigit():
                                 print("Operação cancelada ou formato inválido.")
@@ -128,45 +142,7 @@ while True: # loop principal
                                     demandas[num]["status"] = "ativa"
                                     atualizar_demanda("Demanda atualizada com sucesso!", True)
                         
-                        case "3": # Ver detalhes
-                            os.system("cls")
-                            printar_demanda() 
-                            print()
-                            for item in lista_data:
-                                print(f"{item[0]}: {item[1]}h")
-                            
-                            print("\n1. Inputar horas\n2. Marcar como concluida/ativa\n3. Ver menos detalhes\n3. Voltar tudo (enter)")
-                            input_horas_ver_detalhes = input("> ")     
-                            match input_horas_ver_detalhes:
-                                
-                                case "1": # Computar horas (+ detalhes)
-                                    computar_horas = input("Digite as horas: ")
-                                    if computar_horas == "" or not computar_horas.isdigit():
-                                        print("Operação cancelada ou formato inválido.")
-                                        time.sleep(1)
-                                    else:
-                                        settings_data()
-                                        break                       
-                                case "2":
-                                    if demandas[num]["status"] == "ativa":
-                                        print("Você deseja marcar essa demanda como concluída? (s/n)")
-                                        decisao = input("> ")
-                                        if decisao.upper() == "S":
-                                            demandas[num]["status"] = "concluida"
-                                            atualizar_demanda("Demanda atualizada com sucesso!", True)
-
-                                    elif demandas[num]["status"] == "concluida":
-                                        print("Você deseja marca essa demanda como ativa? (s/n)")
-                                        decisao = input("> ")
-                                        if decisao.upper() == "S":
-                                            demandas[num]["status"] = "ativa"
-                                            atualizar_demanda("Demanda atualizada com sucesso!", True)
-                                
-                                case "3": # ver menos detalhes
-                                    os.system("cls")
-                                case "4"|"": # voltar
-                                    break
-                        case "4"|"": # voltar
+                        case "3"|"": # voltar
                             break
       
         case "2": # Cadastrar demandas principal
