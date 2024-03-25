@@ -406,7 +406,7 @@ while True: # loop principal
                                     print(f"{amarelo + num} - {demandas[num]['titulo'] + Fore.RESET}")
                                     print(azul + f"Horas registradas nessa data: {demandas[num]['datas'][data_especifica]}" + Fore.RESET)
                                     print("-" * 30)
-                            print(verde + "Horas totais:", soma, Fore.RESET, "\n")
+                            print(verde + f"Horas totais: {soma}h" , Fore.RESET, "\n")
                             input("\033[1mAperte 'enter' para voltar.\033[m")
                     
                     case "2":
@@ -446,7 +446,7 @@ while True: # loop principal
                                             print(f"{amarelo + num} - {demandas[num]['titulo'] + Fore.RESET}")
                                             print(azul + f"Horas registradas em {data}: {demandas[num]['datas'][data]}h" + Fore.RESET)
                                             print("-" * 30)
-                                print(verde + "Horas totais:", soma, Fore.RESET, "\n")
+                                print(verde + f"Horas totais: {soma}h", Fore.RESET, "\n")
                                 input("\033[1mAperte 'enter' para voltar.\033[m")
                     case "3":
                         try:
@@ -471,9 +471,9 @@ while True: # loop principal
                                     if data in datas_range:
                                         soma = soma + demandas[num]["datas"][data]
                                         print(amarelo + f"{num} - {demandas[num]['titulo']}" + Fore.RESET)
-                                        print(azul + f"Horas registradas em {data}: {demandas[num]['datas'][data]}" + Fore.RESET)
+                                        print(azul + f"Horas registradas em {data}: {demandas[num]['datas'][data]}h" + Fore.RESET)
                                         print("-" * 30)
-                            print(verde + "Horas torais:", soma, Fore.RESET, "\n")
+                            print(verde + f"Horas torais: {soma}h", Fore.RESET, "\n")
                             input("\033[1mAperte 'enter' para voltar.\033[m")
 
                         except ValueError:
