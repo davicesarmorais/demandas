@@ -17,20 +17,25 @@
       - Estimativa de horas.
   2. **Pode pesquisar essa demanda.**
       - É **exibida** essa demanda:
-            <br>![EstruturaDemanda](/imgs/EstruturaDemanda.png)
+            <br>![EstruturaDemanda](/imgs/VerDetalhes.png)
       - É possível **inputar as horas** para essa demanda;
           - *Define-se uma data.*
           <br>![Data](/imgs/DeifinirData.png)
-      - É possível **ver mais detalhes** dessa demanda;
-          - Exibe a demanda (*número, título, estimativa, status, horas gastas e restantes*)
-          - Exibe também as **datas com as horas gastas nelas**.
-          <br>![Detalhes](/imgs/VerDetalhes.png)
-  3. **Pode visualizar o relatório de apontamentos.**
+      
+  3. **Pode editar uma demanda** 
+      - No menu '*Cadastrar/Editar demandas*', na opção **3. Editar demanda**, você escolher essas opções:
+        - **numero** -> Edita o número da demanda;
+        - **titulo** -> Edita o título da demanda;
+        - **estimativa** -> Edita a estimativa de horas da demanda;
+        - **data/datas** -> Edita alguma data da demanda;
+            - É possível tanto editar quanto excluir uma data.
+        - **hora/horas** -> Edita as horas gastas de alguma data.
+  4. **Pode visualizar o relatório de apontamentos.**
       - Há como pesquisar por *data específica*, *mês* ou *período*.
           - Data específica <br> ![Data especifica](/imgs/DemandasDiaEspecifico.png)
           - Mês e de um ano específico <br> ![Mes](/imgs/DemandaMesEspecifico.png)
           - Período <br> ![Periodo](/imgs/DemandaPeriodo.png)
-  4. **Pode listar as demandas em execução ou concluídas.**
+  5. **Pode listar as demandas em execução ou concluídas.**
         - Demandas em execução <br> ![execucao](/imgs/DemandasAtivas.png)
         - Demandas concluídas <br> ![concluidas](/imgs/DemandasConcluidas.png)
 
@@ -39,15 +44,9 @@
 ## Manejo do software.
   
   - Para **selecionar** uma categoria, basta digitar alguma opção (*seja um número, ou uma confirmação como s/n*) e apertar enter.
-  - Para **cancelar uma ação** ou **retroceder**, é possível apertar *'enter'*, *certifique-se de que não há nenhum caractere no terminal*.
+  - Para **cancelar uma ação** ou **retroceder**, basta deixar um espaço em branco e apertar *'enter'*, *certifique-se de que não há nenhum caractere no terminal*.
   - Ao **inputar as horas**, o software verifica se há alguma hora inputada na data escolhida e **soma automaticamente**. Não é necessário se preocupar com isso.
-  - No menu '*Cadastrar/Editar demandas*', na opção **3. editar demandas**, há essas opções para escolher: **(Todas as opções podem ser escritas tanto em maiúculo quanto em minúsculo e com ou sem acento)**
-      - **Número** -> Edita o número da demanda;
-      - **Título** -> Edita o título da demanda;
-      - **Estimativa** -> Edita a estimativa de horas da demanda;
-      - **Data/datas** -> Edita alguma data da demanda;
-          - É possível tanto editar quanto excluir uma data.
-      - **Hora/horas** -> Edita as horas gastas de alguma data.
+  - 
 ## Dicas
   - **Leia sempre qual a informação o programa pede**, como formato de alguma data.
   - Coloque o **dado apropriado** para determinada condição.

@@ -4,11 +4,14 @@ import json
 from datetime import datetime, timedelta
 from colorama import init, Fore
 init()
+
+#cores -------------------
 verde = Fore.GREEN
 azul = Fore.LIGHTBLUE_EX
 amarelo = Fore.YELLOW
 red = Fore.LIGHTRED_EX
 roxo = Fore.LIGHTMAGENTA_EX
+# ------------------------
 
 def salvar_horas(data,soma):
     computar_dict = {}
@@ -16,8 +19,8 @@ def salvar_horas(data,soma):
     demandas[num]["datas"].update(computar_dict)
     with open("demandas.json" , "w") as f:
         json.dump(demandas , f, indent=4)
-    print("Horas computadas com sucesso!")
-    time.sleep(1)
+    print("\033[1;32mHoras computadas com sucesso!\033[m")
+    time.sleep(0.8)
 
 def atualizar_demanda(texto, printar):
     with open("demandas.json", "w") as f:
@@ -38,15 +41,25 @@ def calc_data(condicao):
     if condicao:
         data = datetime.now().date().strftime("%d/%m/%Y")
     else:
-        data = input("Digite a data (formato: dia/mes/ano): ")
+        while True:
+            try:
+                data = input("Digite a data (formato: dd/mm/yyyy): ")
+                if data == "":
+                    break
+                else:
+                    data = datetime.strptime(data, "%d/%m/%Y")
+                    data = data.strftime("%d/%m/%Y")
+                    break
+            except ValueError:
+                print("\033[1;31mFormato inválido\033[m")
     
-    if data in demandas[num]["datas"]:
-        salvar_horas(data, demandas[num]["datas"][data])
-    else:
-        salvar_horas(data, 0)
+    if data != "":
+        if data in demandas[num]["datas"]:
+            salvar_horas(data, demandas[num]["datas"][data])
+        else:
+            salvar_horas(data, 0)
 
 def settings_data():
-    os.system("cls")
     print("1. Usar data automatica\n2. Digitar data manualmente\n3. Cancelar (enter)")
     data_settings = input("> ")
     match data_settings:
@@ -54,6 +67,8 @@ def settings_data():
             calc_data(True)
         case "2":
             calc_data(False)
+
+
 
 while True: # loop principal
     demanda_numero = [] # sempre recomeçar vazio para nâo dar erro
@@ -76,74 +91,83 @@ while True: # loop principal
             json.dump(demandas, f, indent=4) 
     
     os.system("cls")
-    print(f"{"Demandas":-^100}")
+    print(f"{'{ Demandas }':-^80}")
     for numero in demandas:
         print(f"{numero} - {demandas[numero]['titulo']}")
-    print("-" * 100)
-    print("\n1. Pesquisar demanda",
+    if not demandas:
+        print("\033[3mNenhuma demanda registrada.\033[m")
+    print("-" * 80)
+    print("\n[?] - Ajuda",
+          "\n1. Pesquisar demanda",
           "\n2. Cadastrar/Editar demanda",
           "\n3. Ver relatórios de apontamentos",
           "\n4. Listar demandas em execução",
           "\n5. Listar demandas concluídas",
-          "\n6. Salvar e fechar programa",
-          "\n[?] - Ajuda")
+          "\n6. Salvar e fechar programa",)
     principal_input = (input("> "))
     match principal_input:
         
         case "1":  # Pesquisar demandas
-            digitar_num_titulo = input("Digite o número ou o titulo da demanda: ")
-            if digitar_num_titulo not in demanda_numero and digitar_num_titulo not in demanda_titulo:
-                print("Demanda não encontrada.")
-                time.sleep(1)          
-            
-            else:
-                if not digitar_num_titulo.isdigit(): # se nao for um numero (numero da demanda) puxa o valor do titulo por meio de indexagem do numeri
-                    num = demanda_numero[demanda_titulo.index(digitar_num_titulo)]
-                else:
-                    num = digitar_num_titulo
-                lista_data = list(demandas[num]["datas"].items()) # datas vao para uma lista par melhor menipulação
-                soma = 0
-                for item in lista_data:
-                    soma = soma + int(item[1]) # soma de horas gastas
-                diferenca = int(demandas[num]['estimativa']) - soma  # horas restantes         
+            digitar_num_titulo = input("\033[1mDigite o número ou o titulo da demanda: \033[m")
+            if digitar_num_titulo != "":
+                if digitar_num_titulo not in demanda_numero and digitar_num_titulo not in demanda_titulo:
+                    print("\033[1;31mDemanda não encontrada.\033[m")
+                    time.sleep(1)          
                 
-                while True: 
-                    os.system("cls")
-                    printar_demanda()              
-                    print()
-                    for item in lista_data:
-                        print(f"{item[0]}: {item[1]}h")
-                            
-                    print("\n1. Inputar horas\n2. Marcar como concluida/ativa\n3. Voltar (enter)")
-                    input_horas_ver_detalhes = input("> ")
-                    match input_horas_ver_detalhes:
-                    
-                        case "1": # 
-                            computar_horas = input("Digite as horas: ")
-                            if computar_horas == "" or not computar_horas.isdigit():
-                                print("Operação cancelada ou formato inválido.")
-                                time.sleep(1)
-                            else:                   
-                                settings_data()
-                                break
-
-                        case "2":
-                            if demandas[num]["status"] == "ativa":
-                                print("Você deseja marcar essa demanda como concluída? (s/n)")
-                                decisao = input("> ")
-                                if decisao.upper() == "S":
-                                    demandas[num]["status"] = "concluida"
-                                    atualizar_demanda("Demanda atualizada com sucesso!", True)
-
-                            elif demandas[num]["status"] == "concluida":
-                                print("Você deseja marca essa demanda como ativa? (s/n)")
-                                decisao = input("> ")
-                                if decisao.upper() == "S":
-                                    demandas[num]["status"] = "ativa"
-                                    atualizar_demanda("Demanda atualizada com sucesso!", True)
+                else:
+                    while True: 
+                        if not digitar_num_titulo.isdigit(): # se nao for um numero (numero da demanda) puxa o valor do titulo por meio de indexagem do numeri
+                            num = demanda_numero[demanda_titulo.index(digitar_num_titulo)]
+                        else:
+                            num = digitar_num_titulo
+                        lista_data = list(demandas[num]["datas"].items()) # datas vao para uma lista par melhor menipulação
+                        soma = 0
+                        for item in lista_data:
+                            soma = soma + int(item[1]) # soma de horas gastas
+                        diferenca = int(demandas[num]['estimativa']) - soma  # horas restantes         
                         
-                        case "3"|"": # voltar
-                            break
+                        os.system("cls")
+                        printar_demanda()              
+                        print()
+                        for item in lista_data:
+                            print(f"{item[0]}: {item[1]}h")
+                                
+                        print("\n1. Inputar horas\n2. Marcar como concluida/ativa\n3. Voltar (enter)")
+                        input_horas_ver_detalhes = input("> ")
+                        match input_horas_ver_detalhes:
+                        
+                            case "1": # 
+                                computar_horas = input("Digite as horas: ")
+                                if computar_horas != '':
+                                    if computar_horas.isdigit():
+                                        settings_data()
+                                    else:
+                                        print("\033[3;31mFormato inválido.\033[m")
+                                        time.sleep(1)  
+                                
+                            case "2":
+                                if demandas[num]["status"] == "ativa":
+                                    print("\033[1;34mVocê deseja marcar essa demanda como\033[m \033[1;32mconcluída?\033[m \033[1;34m(s/n)\033[m")
+                                    decisao = input("> ")
+                                    if decisao.upper() == "S":
+                                        demandas[num]["status"] = "concluida"
+                                        atualizar_demanda("\033[1;32mDemanda atualizada com sucesso!\033[m", True)
+                                    else:
+                                        print("\033[1;34mOperação cancelada.\033[m")
+                                        time.sleep(1.5)
+
+                                elif demandas[num]["status"] == "concluida":
+                                    print("\033[1;34mVocê deseja marca essa demanda como\033[m \033[1;32mativa?\033[m \033[1;34m(s/n)\033[m")
+                                    decisao = input("> ")
+                                    if decisao.upper() == "S":
+                                        demandas[num]["status"] = "ativa"
+                                        atualizar_demanda("\033[1;32mDemanda atualizada com sucesso!\033[m", True)
+                                    else:
+                                        print("\033[1;34mOperação cancelada.\033[m")
+                                        time.sleep(1.5)
+                            
+                            case "3"|"": # voltar
+                                break
       
         case "2": # Cadastrar demandas principal
             while True:
@@ -155,148 +179,213 @@ while True: # loop principal
                         break
                     case "1": # Adicionar demanda
                         os.system("cls")
-                        print("Para voltar a qualquer momento aperte 'Enter'\n")
-                        cadastrar_numero = input("Digite o NÚMERO da demanda: ") # cadastrar numero
+                        print("\033[3mPara cancelar a qualquer momento digite 'cancel'\033[m\n")
                         
-                        if cadastrar_numero != "" and cadastrar_numero not in demandas:
-                            cadastrar_titulo = input("Digite o TÍTULO da demanda: ") # cadastrar titulo
-                            
-                            if cadastrar_titulo != "":    # cadastrar estimativa
-                                cadastrar_estimativa = input("Digite a estimativa de horas da demanda: ")
-                                
-                                if str(cadastrar_estimativa) != "" and cadastrar_estimativa.isdigit():    
-                                    cadastro_dict = {}
-                                    cadastro_dict[cadastrar_numero] = {"titulo": cadastrar_titulo, "estimativa": int(cadastrar_estimativa), "status": "ativa", "datas": {}}
-                                    demandas.update(cadastro_dict)
-                                    atualizar_demanda(None, False) # atualizar lista
-                                    print(f"Demanda ({cadastrar_numero}) adicionada com sucesso!")
-                                    time.sleep(2)
-                                    break
+                        def cadastrar():
+                            while True:
+                                os.system("cls")
+                                print("\033[3mPara cancelar a qualquer momento digite 'cancel'\033[m\n")
+                                cadastrar_numero = input("Digite o NÚMERO da demanda: ")
+                                if cadastrar_numero == "cancel":
+                                    return  
+                                if cadastrar_numero in demandas:
+                                    print("\033[1;31mNúmero já registrado.\033[m")
+                                    time.sleep(1)
                                 else:
-                                    print("Operação cancelada ou formato inválido.")
-                                    time.sleep(1.5)
-                        else:
-                            print("Operação cancelada ou número já registrado.")
-                            time.sleep(1.5)
+                                    break
+                                
+                            cadastrar_titulo = input("Digite o TÍTULO da demanda: ")
+                            if cadastrar_titulo == "cancel":
+                                return
+                            
+                            while True:
+                                cadastrar_estimativa = input("Digite a estimativa de horas da demanda: ")
+                                if cadastrar_estimativa == "cancel":
+                                    return
+                                if not cadastrar_estimativa.isdigit():
+                                    print("\033[3;31mFormato inválido.\033[m")
+                                    time.sleep(1)
+                                else:
+                                    break
+                               
+                            cadastro_dict = {}
+                            cadastro_dict[cadastrar_numero] = {"titulo": cadastrar_titulo, "estimativa": int(cadastrar_estimativa), "status": "ativa", "datas": {}}
+                            demandas.update(cadastro_dict)
+                            atualizar_demanda(None, False) # atualizar lista
+                            print(f"\033[1;32mDemanda ({cadastrar_numero}) adicionada com sucesso!\033[m")
+                            time.sleep(2) 
+                            
+                        cadastrar()
                     
                     case "2": # Remover demanda
+                        os.system('cls')
+                        print(f"{'{ Demandas }':-^80}")
+                        for numero in demandas:
+                            print(f"{numero} - {demandas[numero]['titulo']}")
+                        if not demandas:
+                            print("\033[3mNenhuma demanda registrada.\033[m")
+                        print("-" * 80)
                         remover_demanda = input("Digite o número da demanda que deseja remover: ")
                         if remover_demanda != "":
                             if remover_demanda not in demandas:
-                                print("Demanda não encontrada.")
+                                print("\033[1;31mDemanda não encontrada.\033[m")
                                 time.sleep(1.5)
                             else:
-                                print(f"Você realmente deseja excluir a demanda {remover_demanda}? (s/n)")
+                                print(f"\033[1;34mVocê realmente deseja excluir a demanda {remover_demanda}? (s/n)\033[m")
                                 confirmacao = input("> ")
                                 if confirmacao.upper() == "S":
                                     del demandas[remover_demanda]
                                     atualizar_demanda(None, False)
-                                    print(f"Demanda {remover_demanda} excluída com sucesso.")
+                                    print(f"\033[1;32mDemanda {remover_demanda} excluída com sucesso.\033[m")
                                     time.sleep(1)
+                                else:
+                                    print("\033[1;34mOperação cancelada.\033[m")
+                                    time.sleep(1.5)
                     
                     case "3": # Editar demanda
+                        os.system('cls')
+                        print(f"{'{ Demandas }':-^80}")
+                        for numero in demandas:
+                            print(f"{numero} - {demandas[numero]['titulo']}")
+                        if not demandas:
+                            print("\033[3mNenhuma demanda registrada.\033[m")
+                        print("-" * 80)
                         editar_demanda = input("Digite o número da demanda que quer editar: ")
-                        if editar_demanda not in demandas:
-                            print("Demanda não encontrada")
-                            time.sleep(1)
-                        else:
-                            os.system("cls")
-                            a = demandas[editar_demanda]
-                            lista_data = list(demandas[editar_demanda]["datas"].items())
-                            print(amarelo + f"{editar_demanda}: {a['titulo']}" + Fore.RESET)
-                            print(f"Estimativa: {roxo}{a['estimativa']}h{Fore.RESET}")
-                            for data in lista_data:
-                                print(f"{data[0]}: {data[1]}h")
-                            print("\nDigite qual a informação que deseja alterar (Ex: 'numero', 'titulo', 'estimativa', 'data', 'hora')")
-                            escolher_info = input("> ")                    
-                            match escolher_info.lower():
-                            
-                                case "titulo"|"título": # Editar titulo
-                                    editar_titulo = input("Digite o novo nome do titulo: ")
-                                    if editar_titulo != "":
-                                        print(f"Você deseja confirmar a alteração para '{editar_titulo}'? (s/n)")
-                                        choice = input("> ")
-                                        if choice.upper() == "S":
-                                            demandas[editar_demanda]["titulo"] = editar_titulo
-                                            atualizar_demanda("Demanda atualizada com sucesso!", True)
-                                            break
+                        if editar_demanda != "":
+                            if editar_demanda not in demandas:
+                                print("\033[1;34mDemanda não encontrada\033[m")
+                                time.sleep(1)
+                            else:
+                                os.system("cls")
+                                a = demandas[editar_demanda]
+                                lista_data = list(demandas[editar_demanda]["datas"].items())
+                                print(amarelo + f"{editar_demanda}: {a['titulo']}" + Fore.RESET)
+                                print(f"Estimativa: {roxo}{a['estimativa']}h{Fore.RESET}")
+                                for data in lista_data:
+                                    print(f"{data[0]}: {data[1]}h")
+                                print("\nDigite qual a informação que deseja alterar \033[3m(Ex: 'numero', 'titulo', 'estimativa', 'data', 'hora')\033[m")
+                                escolher_info = input("> ")                    
+                                match escolher_info.lower():
+                                
+                                    case "titulo"|"título": # Editar titulo
+                                        editar_titulo = input("Digite o novo nome do titulo: ")
+                                        if editar_titulo != "":
+                                            print(f"\033[1;34mVocê deseja confirmar a alteração para '{editar_titulo}'? (s/n)\033[m")
+                                            choice = input("> ")
+                                            if choice.upper() == "S":
+                                                demandas[editar_demanda]["titulo"] = editar_titulo
+                                                atualizar_demanda("\033[1;32mDemanda atualizada com sucesso!\033[m", True)
+                                                break
+                                            else:
+                                                print("\033[1;34mOperação cancelada.\033[m")
+                                                time.sleep(1.5)
+                                                
 
-                                case "estimativa": # Editar estimativa
-                                    editar_estimativa = input("Digite a nova quantidade de horas de estimativa: ")
-                                    if editar_estimativa != "":
-                                        print(f"Você deseja confirmar a alteração para {editar_estimativa}h? (s/n)")
-                                        choice = input("> ")
-                                        if choice in ["s", "S"] and editar_estimativa.isdigit():
-                                            demandas[editar_demanda]["estimativa"] = int(editar_estimativa)
-                                            atualizar_demanda("Demanda atualizada com sucesso!", True)
-                                            break
-                                        else:
-                                            os.system("cls")
-                                            print("Operação cancelada.")
+                                    case "estimativa": # Editar estimativa
+                                        editar_estimativa = input("Digite a nova quantidade de horas de estimativa: ")
+                                        if editar_estimativa != "":
+                                            print(f"\033[1;34mVocê deseja confirmar a alteração para {editar_estimativa}h? (s/n)\033[m")
+                                            choice = input("> ")
+                                            if choice in ["s", "S"] and editar_estimativa.isdigit():
+                                                demandas[editar_demanda]["estimativa"] = int(editar_estimativa)
+                                                atualizar_demanda("\033[1;32mDemanda atualizada com sucesso!\033[m", True)
+                                                break
+                                            else:
+                                                print("\033[1;34mOperação cancelada.\033[m")
+                                                time.sleep(1.5)
+
+                                    case "data"|"datas"|"horas"|"hora": # Editar data, horas
+                                        editar_data = input("Digite a data que quer editar, excluir ou modificar horas: ")
+                                        if editar_data == "" or editar_data not in demandas[editar_demanda]["datas"]:
+                                            print("\033[1;34mOperação cancelada.\033[m")
                                             time.sleep(1.5)
-
-                                case "data"|"datas"|"horas"|"hora": # Editar data, horas
-                                    editar_data = input("Digite a data que quer editar, excluir ou modificar horas: ")
-                                    if editar_data == "" or editar_data not in demandas[editar_demanda]["datas"]:
-                                        os.system("cls")
-                                        print("Operação cancelada")
-                                        time.sleep(1.5)
-                                    
-                                    else:
-                                        print("1. Mudar data\n2. Mudar horas\n3. Exluir data\n4. Voltar (enter)")
-                                        choice2 = input("> ")
-                                        match choice2:
-                                            
-                                            case "1": # Editar data
-                                                trocar_data = input("Digite a nova data. Formato: (dia/mes/anos): ")
-                                                if trocar_data == "":
-                                                    print("Operação cancelada.")
-                                                    time.sleep(1)
-                                                else:
-                                                    print(f"Você deseja confirmar a alteração para '{trocar_data}'? (s/n)")
-                                                    choice = input("> ")
-                                                    if choice in ["s", "S"]:
-                                                        x = demandas[editar_demanda]["datas"][editar_data]
+                                        
+                                        else:
+                                            print("1. Mudar data\n2. Mudar horas\n3. Exluir data\n4. Voltar (enter)")
+                                            choice2 = input("> ")
+                                            match choice2:
+                                                
+                                                case "1": # Editar data
+                                                    while True:
+                                                        try:
+                                                            trocar_data = input("Digite a nova data. Formato: (dd/mm/yyyy): ")
+                                                            if trocar_data == "":
+                                                                print("\033[1;34mOperação cancelada.\033[m")
+                                                                time.sleep(1)
+                                                                break
+                                                            else:
+                                                                trocar_data = datetime.strptime(trocar_data, "%d/%m/%Y")
+                                                                trocar_data = trocar_data.strftime("%d/%m/%Y")
+                                                                break
+                                                        except ValueError:
+                                                            print("\033[1;31mFormato inválido\033[m")
+                                                        
+                                                    if trocar_data != "":
+                                                            
+                                                        print(f"\033[1;34mVocê deseja confirmar a alteração para '{trocar_data}'? (s/n)\033[m")
+                                                        choice = input("> ")
+                                                        if choice in ["s", "S"]:
+                                                            if trocar_data in demandas[editar_demanda]["datas"]:
+                                                                valor = demandas[editar_demanda]["datas"][editar_data] + demandas[editar_demanda]["datas"][trocar_data]
+                                                                demandas[editar_demanda]["datas"][trocar_data] = valor
+                                                                del demandas[editar_demanda]["datas"][editar_data]
+                                                                atualizar_demanda("\033[1;32mDemanda atualizada com sucesso!\033[m", True)
+                                                                break
+                                                                
+                                                            else:
+                                                                x = demandas[editar_demanda]["datas"][editar_data]
+                                                                del demandas[editar_demanda]["datas"][editar_data]
+                                                                demandas[editar_demanda]["datas"][trocar_data] = x
+                                                                atualizar_demanda("\033[1;32mDemanda atualizada com sucesso!\033[m", True)
+                                                                break
+                                                        else:
+                                                            print("\033[1;34mOperação cancelada.\033[m")
+                                                            time.sleep(1.5)
+                                                
+                                                case "2": # Editar horas
+                                                    escolha_horas = input("Digite a nova quantidade de horas: ")
+                                                    if escolha_horas != "" and escolha_horas.isdigit():
+                                                        print(f"\033[1;34mVocê tem certeza que quer alterar as horas para {escolha_horas}h? (s/n)\033[m")
+                                                        certeza = input("> ")
+                                                        if certeza.upper() == "S":
+                                                            demandas[editar_demanda]["datas"][editar_data] = int(escolha_horas)
+                                                            atualizar_demanda("\033[1;32mDemanda atualizada com sucesso!\033[m", True)
+                                                            break
+                                                        else:
+                                                            print("\033[1;34mOperação cancelada.\033[m")
+                                                            time.sleep(1.5)
+                                                    else:
+                                                        print("\033[1;34mOperação cancelada.\033[m")
+                                                        time.sleep(1.5)
+                                                
+                                                case "3": # Excluir data
+                                                    print(f"\033[1;34mVocê tem certeza que quer excluir a data {editar_data} da demanda {editar_demanda}? (s/n)\033[m")
+                                                    choice3 = input("> ")
+                                                    if choice3.upper() == "S":
                                                         del demandas[editar_demanda]["datas"][editar_data]
-                                                        demandas[editar_demanda]["datas"][trocar_data] = x
-                                                        atualizar_demanda("Demanda atualizada com sucesso!", True)
+                                                        atualizar_demanda('\033[1;32mData excluída com sucesso!\033[m', True)
                                                         break
-                                            
-                                            case "2": # Editar horas
-                                                escolha_horas = input("Digite a nova quantidade de horas: ")
-                                                if escolha_horas != "" and escolha_horas.isdigit():
-                                                    print(f"Você tem certeza que quer alterar as horas para {escolha_horas}h? (s/n)")
-                                                    certeza = input("> ")
-                                                    if certeza.upper() == "S":
-                                                        demandas[editar_demanda]["datas"][editar_data] = int(escolha_horas)
-                                                        atualizar_demanda("Demanda atualizada com sucesso!", True)
-                                                        break
-                                                else:
-                                                    os.system("cls")
-                                                    print("Operação cancelada.")
-                                                    time.sleep(1.5)
-                                            
-                                            case "3": # Excluir data
-                                                print(f"Você tem certeza que quer excluir a data {editar_data} da demanda {editar_demanda}? (s/n)")
-                                                choice3 = input("> ")
-                                                if choice3.upper() == "S":
-                                                    del demandas[editar_demanda]["datas"][editar_data]
-                                                    atualizar_demanda('Data excluída com sucesso!', True)
-                                                    break
-                           
-                                case "numero"|"número": # Editar numero demanda
-                                    escolha_numero = input("Digite o novo número da demanda: ")
-                                    if escolha_numero != ""and escolha_numero not in demandas:
-                                        print(f"Você tem certeza que deseja alterar o número dessa demanda para {escolha_numero}? (s/n)")
-                                        decisao = input("> ")
-                                        if decisao.upper() == "S":
-                                            x = demandas[editar_demanda]
-                                            del demandas[editar_demanda]
-                                            demandas[escolha_numero] = x
-                                            atualizar_demanda("Demanda atualizada com sucesso!", True) 
-                                    else:
-                                        print("Operação cancelada ou número já registrado.")
-                                        time.sleep(1)
+                                                    else:
+                                                        print("\033[1;34mOperação cancelada.\033[m")
+                                                        time.sleep(1.5)
+                            
+                                    case "numero"|"número": # Editar numero demanda
+                                        escolha_numero = input("Digite o novo número da demanda: ")
+                                        if escolha_numero != ""and escolha_numero not in demandas:
+                                            print(f"\033[1;34mVocê tem certeza que deseja alterar o número dessa demanda para {escolha_numero}? (s/n)\033[m")
+                                            decisao = input("> ")
+                                            if decisao.upper() == "S":
+                                                x = demandas[editar_demanda]
+                                                del demandas[editar_demanda]
+                                                demandas[escolha_numero] = x
+                                                atualizar_demanda("\033[1;32mDemanda atualizada com sucesso!\033[m", True) 
+                                            else:
+
+                                                print("\033[1;34mOperação cancelada.\033[m")
+                                                time.sleep(1.5)
+                                        else:
+                                            print("\033[1;34mOperação cancelada ou número já registrado.\033[m")
+                                            time.sleep(1)
                                                                 
         case "3": # Relatórios
             while True:
@@ -318,7 +407,7 @@ while True: # loop principal
                                     print(azul + f"Horas registradas nessa data: {demandas[num]['datas'][data_especifica]}" + Fore.RESET)
                                     print("-" * 30)
                             print(verde + "Horas totais:", soma, Fore.RESET, "\n")
-                            input("Aperte 'enter' para voltar.")
+                            input("\033[1mAperte 'enter' para voltar.\033[m")
                     
                     case "2":
                         meses = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"]
@@ -330,7 +419,7 @@ while True: # loop principal
                                 mes, ano = entrada.split("-") 
                             else:
                                 mes, ano = None, None
-                                print("Formato inválido.")
+                                print("\033[1;31mFormato inválido.\033[m")
                                 time.sleep(1)
                             
                             if (mes != None and ano != None):
@@ -358,7 +447,7 @@ while True: # loop principal
                                             print(azul + f"Horas registradas em {data}: {demandas[num]['datas'][data]}h" + Fore.RESET)
                                             print("-" * 30)
                                 print(verde + "Horas totais:", soma, Fore.RESET, "\n")
-                                input("Aperte 'enter' para voltar.")
+                                input("\033[1mAperte 'enter' para voltar.\033[m")
                     case "3":
                         try:
                             periodo1,periodo2 = input("Digite um período (Formato: '01/01/2023-01/01/2024'): ").split("-")
@@ -385,10 +474,10 @@ while True: # loop principal
                                         print(azul + f"Horas registradas em {data}: {demandas[num]['datas'][data]}" + Fore.RESET)
                                         print("-" * 30)
                             print(verde + "Horas torais:", soma, Fore.RESET, "\n")
-                            input("Aperte 'enter' para voltar.")
+                            input("\033[1mAperte 'enter' para voltar.\033[m")
 
                         except ValueError:
-                            print("Formato inválido.")
+                            print("\033[1;31mFormato inválido ou operação cancelada.\033[m")
                             time.sleep(1)
                     
                     
@@ -409,7 +498,7 @@ while True: # loop principal
                     printar_demanda()
                     print("-" * 20)
             print()
-            input("Aperte enter para voltar a tela principal.")
+            input("\033[1mAperte enter para voltar a tela principal.\033[m")
                             
         case "5": # Exibir demandas concluídas
             os.system("cls")
@@ -427,7 +516,7 @@ while True: # loop principal
                     printar_demanda()
                     print("-" * 20)
             print()
-            input("Aperte enter para voltar a tela principal.")
+            input("\033[1mAperte enter para voltar a tela principal.\033[m")
         
         case "6": # Fechar programa
             os.system("cls")
@@ -444,4 +533,4 @@ while True: # loop principal
             os.system('cls')
             print("Para obter ajuda confira o README no github com todas as funções explicadas.")
             print("\nhttps://github.com/davicesarmorais/demandas/blob/main/README.md\n")
-            input("Aperte 'enter' para voltar.")
+            input("\033[1mAperte 'enter' para voltar.\033[m")
