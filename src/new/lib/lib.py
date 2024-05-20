@@ -23,10 +23,9 @@ def abrir_arquivo() -> None:
 demandas = abrir_arquivo()
 
 
-def salvar_no_json() -> None:
-    with open("demandas.json", "w") as file:
-        json.dump(demandas, file, indent=4)
-
+def salvar_no_json(arquivo : str, dicionario: dict) -> None:
+    with open(arquivo, "w") as file:
+        json.dump(dicionario, file, indent=4)
 
 def printar_uma_demanda(numero_demanda: str, com_horas: bool) -> None:
     demanda = demandas[numero_demanda]

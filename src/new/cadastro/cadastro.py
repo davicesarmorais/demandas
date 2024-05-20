@@ -51,7 +51,7 @@ def adicionar_demandas() -> None:
     }
 
     demandas.update(cadastro_dict)
-    salvar_no_json()
+    salvar_no_json("demandas.json", demandas)
     print(f"{verde}Demanda ({numero_demanda}) adicionada com sucesso!{reset}")
     sleep(1)
 
@@ -81,7 +81,7 @@ def remover_demandas() -> None:
 
         if confirmacao == "s":
             del demandas[numero_demanda]
-            salvar_no_json()
+            salvar_no_json("demandas.json", demandas)
             print(f"{verde}Demanda {numero_demanda} excluída com sucesso.{reset}")
             sleep(1)
             return
@@ -92,7 +92,7 @@ def remover_demandas() -> None:
             continue
 
 
-def cadastrar_demanda() -> None:
+def add_remove_edit_demanda() -> None:
     while True:
         limpar_terminal()
         print("1. Adicionar demanda")

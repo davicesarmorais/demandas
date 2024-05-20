@@ -25,7 +25,7 @@ def alterar_data(data, numero_demanda, quantidade_horas):
     else:
         demandas[numero_demanda]["datas"].update({data: int(quantidade_horas)})
         
-    salvar_no_json()
+    salvar_no_json("demandas.json", demandas)
     print(f"{verde}Quantidade de horas atualizado com sucesso!{reset}")
     sleep(0.5)
 

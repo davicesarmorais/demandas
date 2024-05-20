@@ -1,6 +1,6 @@
 from lib.lib import *
 import re
-from datetime import datetime, timedelta
+from datetime import datetime
 
 
 def formatar_mes_e_ano(entrada_data: str):
@@ -44,21 +44,32 @@ def converter_data(data_string) -> datetime:
     return datetime.strptime(data_string, "%d/%m/%Y")
 
 
-def criar_dict_datas(checar_substring: bool, entrada_data: str = None, iteravel = None) -> dict | int:
+def criar_dict_datas(checar_mes_contido: bool, 
+                     entrada_data: str = None,
+                     dt_inicial: datetime = None,
+                     dt_final: datetime = None
+                     ) -> dict | int:
+    
     novo_dicionario = {}
     total_horas = 0
     for num, valor in demandas.items():
         for data, qtd_horas in valor["datas"].items():
-            if (checar_substring and entrada_data in data) or (not checar_substring and data in iteravel):
-                novo_dicionario.setdefault(data, {})[num] = qtd_horas
-                total_horas += qtd_horas
+            if checar_mes_contido:
+                if entrada_data not in data:
+                    continue
+            
+            if not checar_mes_contido:
+                if not (converter_data(data) >= dt_inicial and converter_data(data) <= dt_final):
+                    continue
+           
+            novo_dicionario.setdefault(data, {})[num] = qtd_horas
+            total_horas += qtd_horas
 
-                    
-    datas_ordenadas = sorted(novo_dicionario.keys(), key=converter_data)
-    return datas_ordenadas, novo_dicionario, total_horas
+    datas_ordenadas = dict(sorted(novo_dicionario.items(), key=lambda item: converter_data(item[0])))                
+    return datas_ordenadas, total_horas
 
 
-def data_especifica() -> None: # Ordenar por demanda
+def data_especifica() -> None:
     while True:
         data = input("Digite uma data específica (ou 'q' para sair): ")
         if data == "q" or not data:
@@ -67,19 +78,22 @@ def data_especifica() -> None: # Ordenar por demanda
         if (data := formatar_data(data)) == "formato invalido":
             continue
         
+        #Ordenar por numero da demanda
         demandas_ordenadas = sorted(demandas.keys(), reverse=True)
         
         limpar_terminal()
         print(f"{azul}Data - {data}{reset}")
         print("-" * 30)
+        
         total_horas = 0
         for num in demandas_ordenadas:
             horas_da_data = demandas[num]["datas"].get(data)
-            if horas_da_data is not None:
-                total_horas += horas_da_data
-                print(f"{amarelo}{num} - {demandas[num]["titulo"]}{reset}")
-                print(f"{azul}Horas: {horas_da_data}h{reset}")
-                print("-" * 30)
+            if horas_da_data is None:
+                continue
+            total_horas += horas_da_data
+            print(f"{amarelo}{num} - {demandas[num]["titulo"]}{reset}")
+            print(f"{azul}Horas: {horas_da_data}h{reset}")
+            print("-" * 30)
         
         print(f"{verde}Horas totais: {total_horas}h{reset}\n")
         input("Aperte 'enter' para voltar.")
@@ -99,15 +113,16 @@ def mes_especifico() -> None: # Ordenar por mes
         if (data := formatar_mes_e_ano(data)) == "formato invalido":
             continue
 
-        datas_ordenadas, dicionario_datas, total_horas = criar_dict_datas(True, entrada_data=data)
+        datas_ordenadas, total_horas = criar_dict_datas(checar_mes_contido=True,
+                                                        entrada_data=data)
             
         limpar_terminal()
-        for datas in datas_ordenadas:
-            for numero_demanda in dicionario_datas[datas]:
+        for data in datas_ordenadas:
+            for numero_demanda in datas_ordenadas[data]:
                 print(f"{amarelo}{numero_demanda} - {demandas[numero_demanda]["titulo"]}{reset}")
-                print(f"{azul}{datas}: {dicionario_datas[datas].get(numero_demanda)}h{reset}")
+                print(f"{azul}{data}: {datas_ordenadas[data][numero_demanda]}h{reset}")
                 print("-" * 30)
-        
+
         print(f"{verde}Total horas: {total_horas}{reset}\n")
         input("Digite 'enter' para voltar")
         break
@@ -136,26 +151,24 @@ def periodo() -> None: # Ordernar por data
             print(f"{red}Formato inválido{reset}")
             continue
         
-        datetime_data_inicial = converter_data(data_inicial)
-        datetime_data_final = converter_data(data_final)
-        
-        intervalo_datas = [datetime.strftime((datetime_data_inicial + timedelta(days=d)), "%d/%m/%Y") 
-                           for d in range((datetime_data_final - datetime_data_inicial).days + 1)]
-        
-        datas_ordenadas, dicionario_datas, total_horas = criar_dict_datas(False, iteravel=intervalo_datas)
+        datas_ordenadas, total_horas = criar_dict_datas(
+                                        checar_mes_contido=False,
+                                        dt_inicial=converter_data(data_inicial),
+                                        dt_final=converter_data(data_final)
+                                        )
         
         limpar_terminal()
         for datas in datas_ordenadas:
-            for numero_demanda in dicionario_datas[datas]:
+            for numero_demanda in datas_ordenadas[datas]:
                 print(f"{amarelo}{numero_demanda} - {demandas[numero_demanda]["titulo"]}{reset}")
-                print(f"{azul}{datas}: {dicionario_datas[datas].get(numero_demanda)}h{reset}")
+                print(f"{azul}{datas}: {datas_ordenadas[datas][numero_demanda]}h{reset}")
                 print("-" * 30)
         
         print(f"{verde}Total horas: {total_horas}{reset}\n")
         input("Digite 'enter' para voltar")
         break            
         
-
+        
 def relatorios_apontamentos() -> None:
     while True:
         limpar_terminal()

@@ -81,7 +81,7 @@ def confirmar_edicao(informacao, nova_informacao, numero_demanda) -> None:
     if confirmacao == "s":
         editar_informacao(informacao, nova_informacao, numero_demanda)
         print(f"{verde}Demanda {numero_demanda} editada com sucesso{reset}")
-        salvar_no_json()
+        salvar_no_json("demandas.json", demandas)
         sleep(1)        
     else:
         print(f"{azul}Operação cancelada{reset}")
@@ -115,7 +115,7 @@ def mudar_data(numero_demanda, data_antes) -> str | None:
             copia = demandas[numero_demanda]["datas"][data_antes]
             del demandas[numero_demanda]["datas"][data_antes]
             demandas[numero_demanda]["datas"][nova_data] = copia
-            salvar_no_json()
+            salvar_no_json("demandas.json", demandas)
             print(f"{verde}Demanda atualizada com sucesso!{reset}")
             sleep(1)
             return "fechar"
@@ -143,7 +143,7 @@ def mudar_horas(numero_demanda, data_antes) -> str | None:
         
         if confirmacao == "s":
             demandas[numero_demanda]["datas"][data_antes] = int(nova_hora)
-            salvar_no_json()
+            salvar_no_json("demandas.json", demandas)
             print(f"{verde}Demanda atualizada com sucesso!{reset}")
             sleep(1)
             return "fechar"
@@ -160,7 +160,7 @@ def excluir_data(numero_demanda, data_antes) -> None:
     
     if confirmacao == "s":
         del demandas[numero_demanda]["datas"][data_antes]
-        salvar_no_json()
+        salvar_no_json("demandas.json", demandas)
         print(f"{verde}Demanda atualizada com sucesso!{reset}")
         sleep(1)
         return "fechar"
@@ -228,7 +228,7 @@ def opcao_status(numero_demanda) -> str | None:
     
     if confirmacao == "s":
         demandas[numero_demanda]["status"] = novo_estado
-        salvar_no_json()
+        salvar_no_json("demandas.json", demandas)
         print(f"{verde}Demanda atualizada com sucesso{reset}")
         sleep(1)
     else:
@@ -282,5 +282,3 @@ def editar_demandas() -> None:
                 if confirmar_edicao(informacao, nova_informacao, numero_demanda) == "numero":
                     break
                            
-                        
-                        
