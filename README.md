@@ -5,7 +5,7 @@
   - É um sistema feito para **armazenar e manipular demandas**.
   - É possível _cadastrar demandas_, _editar_, _remover_, _inputar horas_, _ver demandas em execução ou concluidas_, entre outras coisas.
 
-   - Página principal <br>![Pagina inicial](/imgs/PaginaPrincipal.png)
+  - Página principal <br>![Pagina inicial](/imgs/PaginaPrincipal.png)
   - Dentro de 'Pesquisar demandas'<br>![Input Horas](/imgs/InputHoras.png)
   - Dentro de 'Cadastrar/Editar demanda'<br>![Crud Demandas](/imgs/CRUDdemandas.png)
 
